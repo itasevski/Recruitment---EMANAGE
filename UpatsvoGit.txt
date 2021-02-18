@@ -1,0 +1,17 @@
+1. Otvorete git bash kaj vas na PC
+2. Komanda 1: cd Desktop
+3. Komanda 2: git clone https://github.com/Viktorija2Nikolovska/PrvaPomosh.git
+Ke vi se napravi folder na desktop manuelno narecen "PrvaPomosh", so toa sto toj folder e sega vase lokalno repo i e povrzano so remote repoto na github. Vlagate vnatre vo folderot i go imate celiot izvoren kod i materijali.
+4. Koga ke rabotite nesto novo, treba da napravite druga granka:
+	4a. git checkout -b "imeNaVasaGranka"
+	*Srabotuvate nesto...
+	*GI IZVRSUVATE KOMANDITE OD TOCKA 5 OSVEN 5c
+	4b. git rebase master
+	4c. git checkout master
+	4d. git merge <imeNaVasaGranka>
+	4e. git branch -d <imeNaVasaGranka>
+	4f. KOMANDATA 5c OD TOCKA 5 (git push origin master)
+5. Otkako ke srabotite nesto novo, gi pisuvate slednite komandi vo git bash:
+	5a. git add .
+	5b. git commit -m "<poraka za informacii okolu toa sto ste go srabotile>"
+	5c. git push origin master
