@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8"/>
+    <title>EMANAGE</title>
+
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge">
+    <meta name="description" content="">
+    <meta name="keywords" content="">
+    <meta name="team" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+    <link rel="stylesheet" href="../css/bootstrap.min.css">
+    <link rel="stylesheet" href="../css/owl.carousel.css">
+    <link rel="stylesheet" href="../css/owl.theme.default.min.css">
+    <link rel="stylesheet" href="../css/font-awesome.min.css">
+
+    <!-- MAIN CSS -->
+    <link rel="stylesheet" href="../css/tooplate-style.css">
+</head>
+
+<body>
+
+    <!-- PRE LOADER -->
+    <section class="preloader">
+        <div class="spinner">
+
+            <span class="spinner-rotate"></span>
+
+        </div>
+    </section>
+
+
+    <header th:replace="/fragments/header"></header>
+
+    <section th:replace="/home"></section>
+
+    <footer th:replace="/fragments/footer"></footer>
+
+
+    <!-- SCRIPTS -->
+    <script src="../js/jquery.js"></script>
+    <script src="../js/bootstrap.min.js"></script>
+    <script src="../js/jquery.stellar.min.js"></script>
+    <script src="../js/owl.carousel.min.js"></script>
+    <script src="../js/smoothscroll.js"></script>
+    <script src="../js/custom.js"></script>
+
+</body>
+
+</html>
