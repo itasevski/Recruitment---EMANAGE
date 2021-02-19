@@ -6,12 +6,13 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
-@RequestMapping(value = {"/", "/home"})
-public class HomeController {
+@RequestMapping("/feed")
+public class FeedController {
 
     @GetMapping
-    public String getHomePage() {
-        return "home";
+    public String getFeedPage(Model model) {
+        model.addAttribute("bodyContent", "feed");
+        return "master-template";
     }
 
 }

@@ -1,101 +1,177 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:th="http://www.thymeleaf.org">
+      xmlns:th="http://www.thymeleaf.org" style="margin: 0; padding: 0;">
 
 <head>
     <meta charset="UTF-8"/>
     <title>EMANAGE</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+            integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+            crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+            integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+            crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+            integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+            crossorigin="anonymous"></script>
 
-    <meta http-equiv="X-UA-Compatible" content="IE=Edge">
-    <meta name="description" content="">
-    <meta name="keywords" content="">
-    <meta name="team" content="">
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-
-    <link rel="stylesheet" href="../../static/css/bootstrap.min.css">
-    <link rel="stylesheet" href="../../static/css/owl.carousel.css">
-    <link rel="stylesheet" href="../../static/css/owl.theme.default.min.css">
     <link rel="stylesheet" href="../../static/css/font-awesome.min.css">
 
     <!-- MAIN CSS -->
     <link rel="stylesheet" href="../../static/css/tooplate-style.css">
+
+
 </head>
 
-<body>
+<body style="margin: 0; padding: 0;">
 
-<!-- PRE LOADER -->
-<section class="preloader">
-    <div class="spinner">
-
-        <span class="spinner-rotate"></span>
-
-    </div>
-</section>
-
-
-<header class="navbar custom-navbar navbar-fixed-top" role="navigation">
-
-    <div class="container">
-
-        <div class="navbar-header">
-            <button class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                <span class="icon icon-bar"></span>
-                <span class="icon icon-bar"></span>
-                <span class="icon icon-bar"></span>
+<header xmlns:th="http://www.thymeleaf.org">
+    <nav class="navbar navbar-dark bg-dark" style="color: #1c2e4a">
+        <div class="container">
+            <a class="navbar-brand" href="#" style="font-family: Georgia, serif; font-size: 25px">EMANAGE</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault"
+                    aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
             </button>
 
-            <!-- lOGO TEXT HERE -->
-            <img src="../../static/images/logo-transparent.png" style="height: 110px; width: 130px;">
-        </div>
+            <form class="form-inline my-2 my-lg-0 entitySearch">
+                <div class="input-group input-group-sm">
+                    <input type="text" class="form-control" aria-label="Small"
+                           aria-describedby="inputGroup-sizing-sm"
+                           placeholder="Search ads..." name="attrName" id="attrName">
+                    <div class="input-group-append">
+                        <input class="btn btn-secondary btn-number" type="submit" value="Search"/>
+                    </div>
+                </div>
+            </form>
 
-        <!-- MENU LINKS -->
-        <div class="collapse navbar-collapse">
-            <ul class="nav navbar-nav">
-                <li><a href="#" class="smoothScroll">Home</a></li>
-                <li><a href="#" class="smoothScroll">Find a job/internship</a></li>
-                <li><a href="#" class="smoothScroll">Post an ad</a></li>
-                <li><a href="#" class="smoothScroll">Contact</a></li>
-            </ul>
-            <ul class="nav navbar-nav navbar-right">
-                <li><a href="#">LOGIN/SIGN UP/USERNAME</a></li>
-            </ul>
+            <div class="collapse navbar-collapse justify-content-end" id="navbarsExampleDefault">
+                <ul class="navbar-nav m-auto nmlist">
+                        <li class="nav-item" style="color:whitesmoke;">
+                            Ivot2000
+                        </li>
+                        <li class="nav-item">
+                            <button type="button" class="btn btn-success"><i class="fa fa-user"></i>
+                                View profile
+                            </button>
+                        </li>
+                        <li class="nav-item">
+                            <button type="button" class="btn btn-light"><i class="fa fa-user"></i>
+                                Login
+                            </button>
+                        </li>
+                        <li class="nav-item">
+                            <button type="button" class="btn btn-primary"><i class="fa fa-user-plus"></i>
+                                Sign up
+                            </button>
+                        </li>
+                        <li class="nav-item">
+                            <button type="button" class="btn btn-danger"><i class="fa fa-user"></i>
+                                Logout
+                            </button>
+                        </li>
+                </ul>
+            </div>
         </div>
-
-    </div>
+    </nav>
 </header>
 
-<section id="home" data-stellar-background-ratio="0.5">
-    <div class="overlay"></div>
-    <div class="container">
-        <div class="row">
-
-            <div class="col-md-offset-3 col-md-6 col-sm-12">
-                <div class="home-info">
-                    <h3>emanage</h3>
-                    <h1>Great for people. Great for companies. Manage your company or find a job/internship today!</h1>
-                    <div id="getstarted">
-                        <form action="" method="get" class="online-form">
-                            <button type="submit" class="form-control">Get started</button>
-                        </form>
+<section id="demo">
+    <div class="row">
+        <div class="col-md-6 col-xs-12 col-md-offset-3">
+            <div class="panel-info">
+                <div class="panel-body">
+                    <h3 class="panel-info">Post an ad</h3>
+                </div>
+                <div class="panel-body">
+                    <div class="form-group">
+                        <input class="form-control form-control-lg" type="text" placeholder="Header">
+                        <textarea class="form-control" placeholder="Body" rows="3"></textarea>
                     </div>
+                    <a href="javascript:void(0)" class="btn btn-info btn-sm pull-right waves-effect waves-light">Post</a>
+                    <br>
+                    <br>
+                    <div class="panel-heading">
+                        <h3 class="panel-title">Jobs/Internships</h3>
+                    </div>
+                    <div class="clearfix"></div>
+                    <hr class="margin-bottom-10">
+                    <ul class="list-group list-group-dividered list-group-full">
+                        <li class="list-group-item">
+                            <div class="media">
+                                <div class="media-left">
+                                    <a class="avatar avatar-online" href="javascript:void(0)">
+                                        <img src="https://bootdey.com/img/Content/avatar/avatar1.png" alt="...">
+                                        <i></i>
+                                    </a>
+                                </div>
+                                <div class="media-body">
+                                    <small class="text-muted pull-right">Just now</small>
+                                    <h4 class="media-heading">@Ramon Dunn</h4>
+                                    <div>Lorem ipsum Veniam aliquip culpa laboris minim tempor labore
+                                        commodo officia veniam non in in in.</div>
+                                    <button type="button" class="btn btn-outline-info media-bottom" style="margin-top: 10px">I'm interested</button>
+                                </div>
+                            </div>
+                        </li>
+                        <br>
+                        <li class="list-group-item">
+                            <div class="media">
+                                <div class="media-left">
+                                    <a class="avatar avatar-busy" href="javascript:void(0)">
+                                        <img src="https://bootdey.com/img/Content/avatar/avatar2.png" alt="...">
+                                        <i></i>
+                                    </a>
+                                </div>
+                                <div class="media-body">
+                                    <small class="text-muted pull-right">38 minutes ago</small>
+                                    <h4 class="media-heading">@Scott Sanders</h4>
+                                    <div>Lorem ipsum Laborum sit laborum cillum proident dolore culpa
+                                        reprehenderit qui enim labore do mollit in.</div>
+                                    <button type="button" class="btn btn-outline-info media-bottom" style="margin-top: 10px">I'm interested</button>
+                                </div>
+                            </div>
+                        </li>
+                        <br>
+                        <li class="list-group-item">
+                            <div class="media">
+                                <div class="media-left">
+                                    <a class="avatar avatar-online" href="javascript:void(0)">
+                                        <img src="https://bootdey.com/img/Content/avatar/avatar3.png" alt="...">
+                                        <i></i>
+                                    </a>
+                                </div>
+                                <div class="media-body">
+                                    <small class="text-muted pull-right">2 hours ago</small>
+                                    <h4 class="media-heading">@Nina Wells</h4>
+                                    <div>Lorem ipsum Culpa mollit ex mollit magna dolore dolore dolore
+                                        tempor velit magna enim ad dolore dolore dolore.</div>
+                                    <button type="button" class="btn btn-outline-info media-bottom" style="margin-top: 10px">I'm interested</button>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                    <br>
+                    <span class="text-info" style="">163K users active</span>
                 </div>
             </div>
         </div>
     </div>
 </section>
 
-<footer id="footer" data-stellar-background-ratio="0.5" style="height: 50px">
 
-    <div class="container">
-        <div class="row">
-
+<footer id="footer" data-stellar-background-ratio="0.5" style="height: 95px;">
+    <div class="container" style="background-color: white">
+        <div class="row" style="margin-left: 350px;">
             <div class="copyright-text col-md-12 col-sm-12">
                 <div class="col-md-6 col-sm-6">
                     <p style="margin-top: 15px">Copyright &copy; 2021 EMANAGE</p>
                 </div>
 
                 <div class="col-md-6 col-sm-6">
-                    <ul class="social-icon" style="margin-top: 5px">
+                    <ul class="social-icon" style="margin-top: 5px;">
                         <li><a href="#" class="fa fa-facebook-square" attr="facebook icon"></a></li>
                         <li><a href="#" class="fa fa-twitter"></a></li>
                         <li><a href="#" class="fa fa-instagram"></a></li>
@@ -107,14 +183,13 @@
     </div>
 </footer>
 
-
 <!-- SCRIPTS -->
-<script src="../js/jquery.js"></script>
-<script src="../js/bootstrap.min.js"></script>
-<script src="../js/jquery.stellar.min.js"></script>
-<script src="../js/owl.carousel.min.js"></script>
-<script src="../js/smoothscroll.js"></script>
-<script src="../js/custom.js"></script>
+<script src="../../static/js/jquery.js"></script>
+<script src="../../static/js/bootstrap.min.js"></script>
+<script src="../../static/js/jquery.stellar.min.js"></script>
+<script src="../../static/js/owl.carousel.min.js"></script>
+<script src="../../static/js/smoothscroll.js"></script>
+<script src="../../static/js/custom.js"></script>
 
 </body>
 
