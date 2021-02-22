@@ -2,7 +2,7 @@
 <header xmlns:th="http://www.thymeleaf.org">
     <nav class="navbar navbar-dark bg-dark" style="color: #1c2e4a">
         <div class="container">
-            <a class="navbar-brand" href="/home" style="font-family: Georgia, serif; font-size: 25px">EMANAGE</a>
+            <a class="navbar-brand" href="/home" style="font-family: Poppins-Bold,serif; font-size: 25px">EMANAGE</a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault"
                     aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
@@ -32,19 +32,32 @@
                         </form>
                     </li>
                     <li class="nav-item">
-                        <button type="button" class="btn btn-light"><i class="fa fa-user"></i>
-                            Login
-                        </button>
+                        <form action="/feed" method="get">
+                            <button type="submit" class="btn btn-warning"><i class="fa fa-coffee"></i>
+                                Browse ads
+                            </button>
+                        </form>
                     </li>
                     <li class="nav-item">
-                        <button type="button" class="btn btn-primary"><i class="fa fa-user-plus"></i>
-                            Sign up
-                        </button>
+                        <form action="/login" method="get">
+                            <button type="submit" class="btn btn-light"><i class="fa fa-user"></i>
+                                Login
+                            </button>
+                        </form>
                     </li>
                     <li class="nav-item">
-                        <button type="button" class="btn btn-danger"><i class="fa fa-user"></i>
-                            Logout
-                        </button>
+                        <form action="/register" method="get">
+                            <button type="submit" class="btn btn-primary"><i class="fa fa-user-plus"></i>
+                                Sign up
+                            </button>
+                        </form>
+                    </li>
+                    <li class="nav-item">
+                        <form action="/logout" method="get">
+                            <button type="submit" class="btn btn-danger"><i class="fa fa-user"></i>
+                                Logout
+                            </button>
+                        </form>
                     </li>
                 </ul>
             </div>
