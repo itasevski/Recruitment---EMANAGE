@@ -4,14 +4,11 @@ import mk.ukim.finki.recruitment.model.Company;
 import mk.ukim.finki.recruitment.model.Person;
 import mk.ukim.finki.recruitment.model.User;
 import mk.ukim.finki.recruitment.model.enumerations.Role;
-import mk.ukim.finki.recruitment.model.exceptions.ArgumentsNotValidException;
-import mk.ukim.finki.recruitment.model.exceptions.NonMatchingPasswordsException;
-import mk.ukim.finki.recruitment.model.exceptions.UserNotFoundException;
+import mk.ukim.finki.recruitment.model.exceptions.*;
 import mk.ukim.finki.recruitment.repository.CompanyRepository;
 import mk.ukim.finki.recruitment.repository.PersonRepository;
 import mk.ukim.finki.recruitment.service.UserService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -33,12 +30,16 @@ public class UserServiceImpl implements UserService {
     @Override
     public User register(String nameArg, String email, String password, String repeatedPassword, String userType) {
         if(nameArg == null || nameArg.isEmpty() ||
-                email == null || email.isEmpty() || !email.contains("@")) {
+                email == null || email.isEmpty()) {
             throw new ArgumentsNotValidException();
         }
         else if(!password.equals(repeatedPassword)) throw new NonMatchingPasswordsException();
 
-        return userType.equals("User") ? this.personRepository.save(new Person(email, this.passwordEncoder.encode(password), Role.ROLE_USER, nameArg))
+        emailCheck(email);
+
+        if(userType.equals("person")) usernameCheck(nameArg);
+
+        return userType.equals("person") ? this.personRepository.save(new Person(email, this.passwordEncoder.encode(password), Role.ROLE_USER, nameArg))
                 : this.companyRepository.save(new Company(email, this.passwordEncoder.encode(password), Role.ROLE_USER, nameArg));
     }
 
@@ -49,4 +50,15 @@ public class UserServiceImpl implements UserService {
                  .orElseThrow(() -> new UserNotFoundException(s));
     }
 
+    // == my methods ==
+
+    public void emailCheck(String email) {
+         if(this.personRepository.existsByEmail(email) || this.companyRepository.existsByEmail(email)) throw new EmailAlreadyAssociatedException(email);
+    }
+    // Eden email ne moze da bide asociran so povekje od eden account.
+
+    public void usernameCheck(String username) {
+        if(this.personRepository.existsByUsername(username)) throw new UsernameExistsException(username);
+    }
+    // Ne moze da ima dva isti usernames. (Integrity constraint)
 }

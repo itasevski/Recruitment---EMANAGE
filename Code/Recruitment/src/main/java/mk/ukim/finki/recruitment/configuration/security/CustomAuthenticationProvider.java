@@ -1,6 +1,7 @@
 package mk.ukim.finki.recruitment.configuration.security;
 
 import mk.ukim.finki.recruitment.model.exceptions.ArgumentsNotValidException;
+import mk.ukim.finki.recruitment.model.exceptions.UserNotFoundException;
 import mk.ukim.finki.recruitment.service.UserService;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -8,6 +9,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
@@ -29,7 +31,16 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
 
         if(username.isEmpty() || password.isEmpty()) throw new ArgumentsNotValidException();
 
-        UserDetails userDetails = this.userService.loadUserByUsername(username);
+        UserDetails userDetails = null;
+
+        try {
+            userDetails = this.userService.loadUserByUsername(username);
+        }
+        catch (UserNotFoundException exception) {
+            System.out.println(exception.getMessage());
+        }
+
+        if(userDetails == null) throw new UsernameNotFoundException("User with given UUID doesn't exist.");
 
         if(!this.passwordEncoder.matches(password, userDetails.getPassword())) throw new BadCredentialsException("Incorrect password.");
 
