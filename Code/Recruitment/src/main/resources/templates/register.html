@@ -7,38 +7,52 @@
 						Register
 					</span>
                 </div>
-                <form method="post" action="/register" class="login100-form validate-form">
-                    <div class="wrap-input100 validate-input m-b-26" data-validate="Username is required">
-                        <span class="label-input100">Username</span>
-                        <input class="input100" type="text" name="username" placeholder="Enter username">
-                        <span class="focus-input100"></span>
-                    </div>
-                    <div class="wrap-input100 validate-input m-b-18" data-validate = "Email is required">
-                        <span class="label-input100">Email</span>
-                        <input class="input100" type="email" name="pass" placeholder="Enter email">
-                        <span class="focus-input100"></span>
-                    </div>
-                    <div class="wrap-input100 validate-input m-b-18" data-validate = "Password is required">
-                        <span class="label-input100">Password</span>
-                        <input class="input100" type="password" name="pass" placeholder="Enter password">
-                        <span class="focus-input100"></span>
-                    </div>
-                    <div class="wrap-input100 validate-input m-b-18" data-validate = "Password is required">
-                        <span class="label-input100">Repeat Password</span>
-                        <input class="input100" type="password" name="pass" placeholder="Enter password">
-                        <span class="focus-input100"></span>
-                    </div>
-                    <div class="container-login100-form-btn" style="color: #4674b8; padding-top: 10px">
-                        <button type="submit" class="login100-form-btn">
-                            Register
-                        </button>
-                    </div>
+                <div class="login100-form validate-form">
+                    <form method="post" action="/register">
+                        <div class="wrap-input100 validate-input m-b-26" data-validate="Username is required">
+                            <span class="label-input100">Username/<br>Company Name</span>
+                            <input class="input100" type="text" name="username" placeholder="Enter username or company name" style="width: 300px">
+                            <span class="focus-input100"></span>
+                        </div>
+                        <div class="wrap-input100 validate-input m-b-18" data-validate = "Email is required">
+                            <span class="label-input100">Email</span>
+                            <input class="input100" type="email" name="email" placeholder="Enter email">
+                            <span class="focus-input100"></span>
+                        </div>
+                        <div class="wrap-input100 validate-input m-b-18" data-validate = "Password is required">
+                            <span class="label-input100">Password</span>
+                            <input class="input100" type="password" name="password" placeholder="Enter password">
+                            <span class="focus-input100"></span>
+                        </div>
+                        <div class="wrap-input100 validate-input m-b-18" data-validate = "Repeated Password is required">
+                            <span class="label-input100">Repeat Password</span>
+                            <input class="input100" type="password" name="repeatedPassword" placeholder="Repeat password">
+                            <span class="focus-input100"></span>
+                        </div>
+                        <div class="wrap-input100 validate-input m-b-18" data-validate = "Account type is required">
+                            <span class="label-input100">Register as:</span>
+                            <label class="radio-inline" style="padding-right: 20px">
+                                <input type="radio" name="userType" checked>&nbsp;&nbsp;Person
+                            </label>
+                            <label class="radio-inline">
+                                <input type="radio" name="userType">&nbsp;&nbsp;Company
+                            </label>
+                            <span class="focus-input100"></span>
+                        </div>
+                        <div style="margin-top: 10px">
+                            <div class="container-login100-form-btn" style="color: #4674b8; padding-top: 10px">
+                                <button type="submit" class="login100-form-btn">
+                                    Register
+                                </button>
+                            </div>
+                        </div>
+                    </form>
                     <div class="container-login100-form-btn" style="color: #4674b8; padding-top: 10px">
                         <button class="login100-form-btn">
                             <a href="/login" style="color: #29ca8e;">Already have an account? Login Here</a>
                         </button>
                     </div>
-                </form>
+                </div>
             </div>
         </div>
     </div>
