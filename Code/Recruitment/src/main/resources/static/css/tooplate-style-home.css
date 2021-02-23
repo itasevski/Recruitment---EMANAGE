@@ -833,3 +833,14 @@ footer {
         height: 65vh;
     }
 }
+
+
+/** IVO **/
+
+#pageUsername {
+    color: #29ca8e;
+}
+
+#pageUsername:hover {
+    color: whitesmoke;
+}

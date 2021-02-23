@@ -50,6 +50,16 @@ public class UserServiceImpl implements UserService {
                  .orElseThrow(() -> new UserNotFoundException(s));
     }
 
+    @Override
+    public boolean findPersonByUsername(String username) {
+        return this.personRepository.existsByUsername(username);
+    }
+
+    @Override
+    public Company findCompanyById(String id) {
+        return this.companyRepository.findById(id).get();
+    }
+
     // == my methods ==
 
     public void emailCheck(String email) {

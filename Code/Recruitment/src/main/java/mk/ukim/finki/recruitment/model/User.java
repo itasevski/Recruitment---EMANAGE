@@ -15,7 +15,8 @@ import java.util.Collections;
 @Data
 @MappedSuperclass
 public abstract class User implements UserDetails {
-        private String email;
+
+    private String email;
     private String password;
 
     @Enumerated(value = EnumType.STRING)

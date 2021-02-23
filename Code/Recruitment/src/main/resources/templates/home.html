@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3"
       style="margin: 0; padding: 0;">
 
 <head>
@@ -64,17 +65,31 @@
         <div class="collapse navbar-collapse">
             <ul class="nav navbar-nav">
                 <li><a href="/" class="smoothScroll">Home</a></li>
-                <li><a href="/feed" class="smoothScroll">Find a job/internship</a></li>
-                <li><a href="/feed" class="smoothScroll">Post an ad</a></li>
+                <th:block th:if="${isPerson}">
+                    <th:block sec:authorize="hasRole('ROLE_ADMIN')">
+                        <li><a href="/feed" class="smoothScroll">View all ads</a></li>
+                    </th:block>
+                    <th:block sec:authorize="hasRole('ROLE_USER')">
+                        <li><a href="/feed" class="smoothScroll">Find a job/internship</a></li>
+                    </th:block>
+                </th:block>
+                <th:block sec:authorize="!isAuthenticated()">
+                    <li><a href="/feed" class="smoothScroll">Browse ads</a></li>
+                </th:block>
+                <th:block th:if="${isCompany}">
+                    <li><a href="/feed" class="smoothScroll">Post an ad</a></li>
+                </th:block>
                 <li><a href="#" class="smoothScroll">About us</a></li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
-                <li><a href="/login">LOGIN</a></li>
-                <li><a href="/register">SIGN UP</a></li>
-                <li><a href="/profile">USERNAME</a></li>
+                <li sec:authorize="!isAuthenticated()"><a href="/login">LOGIN</a></li>
+                <li sec:authorize="!isAuthenticated()"><a href="/register">SIGN UP</a></li>
+                <th:block th:if="${username} != null">
+                    <li><a href="/profile" id="pageUsername" th:text="${username}"></a></li>
+                </th:block>
+                <li sec:authorize="isAuthenticated()"><a href="/logout">LOGOUT</a></li>
             </ul>
         </div>
-
     </div>
 </header>
 

@@ -1,5 +1,6 @@
 <!--HEADER-->
-<header>
+<header xmlns:th="http://www.thymeleaf.org"
+        xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
     <nav class="navbar navbar-dark bg-dark" style="color: #1c2e4a">
         <div class="container">
             <a class="navbar-brand" href="/home" style="font-family: Poppins-Bold,serif; font-size: 25px">EMANAGE</a>
@@ -8,29 +9,38 @@
                 <span class="navbar-toggler-icon"></span>
             </button>
 
-            <form class="form-inline my-2 my-lg-0 entitySearch">
-                <div class="input-group input-group-sm">
-                    <input type="text" class="form-control" aria-label="Small"
-                           aria-describedby="inputGroup-sizing-sm"
-                           placeholder="Search ads..." name="attrName" id="attrName">
-                    <div class="input-group-append">
-                        <input class="btn btn-secondary btn-number" type="submit" value="Search"/>
+            <th:block th:if="${feedSearchFlag}">
+                <form class="form-inline my-2 my-lg-0 entitySearch">
+                    <div class="input-group input-group-sm">
+                        <input type="text" class="form-control" aria-label="Small"
+                               aria-describedby="inputGroup-sizing-sm"
+                               placeholder="Search ads..." name="attrName" id="attrName">
+                        <div class="input-group-append">
+                            <input class="btn btn-secondary btn-number" type="submit" value="Search"/>
+                        </div>
                     </div>
-                </div>
-            </form>
+                </form>
+            </th:block>
 
             <div class="collapse navbar-collapse justify-content-end" id="navbarsExampleDefault">
                 <ul class="navbar-nav m-auto nmlist">
-                    <li class="nav-item" style="color:whitesmoke;">
-                        Ivot2000
-                    </li>
-                    <li class="nav-item">
-                        <form action="/profile" method="get">
-                            <button type="submit" class="btn btn-success"><i class="fa fa-user"></i>
-                                View profile
-                            </button>
-                        </form>
-                    </li>
+                    <th:block th:if="${username != null}">
+                        <th:block sec:authorize="hasRole('ROLE_ADMIN')">
+                            <li class="nav-item" style="color:whitesmoke;" th:text="${username} + ' (admin)'"></li>
+                        </th:block>
+                        <th:block sec:authorize="hasRole('ROLE_USER')">
+                            <li class="nav-item" style="color:whitesmoke;" th:text="${username}"></li>
+                        </th:block>
+                    </th:block>
+                    <th:block sec:authorize="isAuthenticated()">
+                        <li class="nav-item">
+                            <form action="/profile" method="get">
+                                <button type="submit" class="btn btn-success"><i class="fa fa-user"></i>
+                                    View profile
+                                </button>
+                            </form>
+                        </li>
+                    </th:block>
                     <li class="nav-item">
                         <form action="/feed" method="get">
                             <button type="submit" class="btn btn-warning"><i class="fa fa-coffee"></i>
@@ -38,27 +48,33 @@
                             </button>
                         </form>
                     </li>
-                    <li class="nav-item">
-                        <form action="/login" method="get">
-                            <button type="submit" class="btn btn-light"><i class="fa fa-user"></i>
-                                Login
-                            </button>
-                        </form>
-                    </li>
-                    <li class="nav-item">
-                        <form action="/register" method="get">
-                            <button type="submit" class="btn btn-primary"><i class="fa fa-user-plus"></i>
-                                Sign up
-                            </button>
-                        </form>
-                    </li>
-                    <li class="nav-item">
-                        <form action="/logout" method="get">
-                            <button type="submit" class="btn btn-danger"><i class="fa fa-user"></i>
-                                Logout
-                            </button>
-                        </form>
-                    </li>
+                    <th:block sec:authorize="!isAuthenticated()">
+                        <li class="nav-item">
+                            <form action="/login" method="get">
+                                <button type="submit" class="btn btn-light"><i class="fa fa-user"></i>
+                                    Login
+                                </button>
+                            </form>
+                        </li>
+                    </th:block>
+                    <th:block sec:authorize="!isAuthenticated()">
+                        <li class="nav-item">
+                            <form action="/register" method="get">
+                                <button type="submit" class="btn btn-primary"><i class="fa fa-user-plus"></i>
+                                    Sign up
+                                </button>
+                            </form>
+                        </li>
+                    </th:block>
+                    <th:block sec:authorize="isAuthenticated()">
+                        <li class="nav-item">
+                            <form action="/logout" method="get">
+                                <button type="submit" class="btn btn-danger"><i class="fa fa-user"></i>
+                                    Logout
+                                </button>
+                            </form>
+                        </li>
+                    </th:block>
                 </ul>
             </div>
         </div>
