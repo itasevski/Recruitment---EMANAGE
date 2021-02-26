@@ -22,6 +22,8 @@ public abstract class User implements UserDetails {
     @Enumerated(value = EnumType.STRING)
     private Role role;
 
+    private String imageSourceUrl;
+
     private boolean isAccountNonExpired = true;
     private boolean isAccountNonLocked = true;
     private boolean isCredentialsNonExpired = true;
@@ -29,10 +31,11 @@ public abstract class User implements UserDetails {
 
     public User() {}
 
-    public User(String email, String password, Role role) {
+    public User(String email, String password, Role role, String imageSourceUrl) {
         this.email = email;
         this.password = password;
         this.role = role;
+        this.imageSourceUrl = imageSourceUrl;
     }
 
     @Override

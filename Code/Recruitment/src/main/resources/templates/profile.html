@@ -1,18 +1,20 @@
-<section>
+<section xmlns:th="http://www.thymeleaf.org">
     <div class="container bootstrap snippets bootdey autoScroll">
         <div class="profile card">
             <div class="profile-body">
                 <div class="profile-bio">
                     <div class="row">
                         <div class="col-md-5 text-center">
-                            <img class="img-thumbnail md-margin-bottom-10" src="https://scontent-sof1-1.xx.fbcdn.net/v/t1.0-9/96519331_2620023111599646_8038116639759138816_o.jpg?_nc_cat=103&ccb=3&_nc_sid=09cbfe&_nc_ohc=n5B0KRoRWj8AX8ZZ9mG&_nc_ht=scontent-sof1-1.xx&oh=958e8b7c1a3df7ddd15503ef02af0f6b&oe=605562CF" alt="">
+                            <img class="img-thumbnail md-margin-bottom-10" th:src="${imgsrc}" alt="">
                         </div>
                         <div class="col-md-7">
-                            <h2>Edward Rooster</h2>
-                            <span><strong>I am: </strong>looking for jobs/intern/employee/company</span>
+                            <h2 th:text="${username}"></h2>
+                            <span><strong>I am: </strong><span th:if="${goal == null}">what is your role?</span><span th:if="${goal != null}" th:text="${goal}"></span></span>
+                            <h6 th:if="${isCompany}" th:text="${companyId}"></h6>
                             <hr>
-                            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse eget massa nec turpis congue bibendum. Integer nulla felis, porta suscipit nulla et, dignissim commodo nunc. Morbi a semper nulla.</p>
-                            <p>Proin mauris odio, pharetra quis ligula non, vulputate vehicula quam. Nunc in libero vitae nunc ultricies tincidunt ut sed leo. Sed luctus dui ut congue consequat. Cras consequat nisl ante, nec malesuada velit pellentesque ac. Pellentesque nec arcu in ipsum iaculis convallis.</p>
+                            <h3 th:if="${bio == null}" style="color: black;">Bio</h3>
+                            <p th:if="${bio == null}">Click on "Edit profile" to edit your bio (and your profile). Say something about yourself!</p>
+                            <p th:if="${bio != null}" th:text="${bio}"></p>
                         </div>
                         <form method="get" action="/profile/edit">
                             <button type="submit" class="btn btn-outline-dark" style="margin-left: 950px">Edit profile</button>
@@ -23,69 +25,70 @@
         </div>
     </div>
     <br>
-    <div class="container">
-        <div class="row bootstrap snippets bootdeys">
-            <div class="col-md-8 col-sm-12">
-                <div class="comment-wrapper">
-                    <div class="panel panel-info">
-                        <div class="panel-heading">
-                            <h3 class="panel-title">My saved ads</h3>
-                        </div>
-                        <div class="panel-body">
-                            <br>
-                            <div class="clearfix"></div>
-                            <ul class="media-list">
-                                <li class="media">
-                                    <a href="#" class="pull-left">
-                                        <img src="https://bootdey.com/img/Content/user_1.jpg" alt="" class="img-circle">
-                                    </a>
-                                    <div class="media-body">
-                                <span class="text-muted pull-right">
-                                    <small class="text-muted">30 min ago</small>
-                                </span>
-                                        <strong class="text-success">@MartinoMont</strong>
-                                        <p>
-                                            Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                                            Lorem ipsum dolor sit amet, <a href="#">#consecteturadipiscing </a>.
-                                        </p>
-                                    </div>
-                                </li>
-                                <li class="media">
-                                    <a href="#" class="pull-left">
-                                        <img src="https://bootdey.com/img/Content/user_2.jpg" alt="" class="img-circle">
-                                    </a>
-                                    <div class="media-body">
-                                <span class="text-muted pull-right">
-                                    <small class="text-muted">30 min ago</small>
-                                </span>
-                                        <strong class="text-success">@LaurenceCorreil</strong>
-                                        <p>
-                                            Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                                            Lorem ipsum dolor <a href="#">#ipsumdolor </a>adipiscing elit.
-                                        </p>
-                                    </div>
-                                </li>
-                                <li class="media">
-                                    <a href="#" class="pull-left">
-                                        <img src="https://bootdey.com/img/Content/user_3.jpg" alt="" class="img-circle">
-                                    </a>
-                                    <div class="media-body">
-                                <span class="text-muted pull-right">
-                                    <small class="text-muted">30 min ago</small>
-                                </span>
-                                        <strong class="text-success">@JohnNida</strong>
-                                        <p>
-                                            Lorem ipsum dolor <a href="#">#sitamet</a> sit amet, consectetur adipiscing elit.
-                                        </p>
-                                    </div>
-                                </li>
-                            </ul>
+    <th:block sec:authorize="hasRole('ROLE_USER')" th:if="${isPerson}">
+        <div class="container">
+            <div class="row bootstrap snippets bootdeys">
+                <div class="col-md-8 col-sm-12">
+                    <div class="comment-wrapper">
+                        <div class="panel panel-info">
+                            <div class="panel-heading">
+                                <h3 class="panel-title">My saved ads</h3>
+                            </div>
+                            <div class="panel-body">
+                                <br>
+                                <div class="clearfix"></div>
+                                <ul class="media-list">
+                                    <li class="media">
+                                        <a href="#" class="pull-left">
+                                            <img src="https://bootdey.com/img/Content/user_1.jpg" alt="" class="img-circle">
+                                        </a>
+                                        <div class="media-body">
+                                    <span class="text-muted pull-right">
+                                        <small class="text-muted">30 min ago</small>
+                                    </span>
+                                            <strong class="text-success">@MartinoMont</strong>
+                                            <p>
+                                                Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                                                Lorem ipsum dolor sit amet, <a href="#">#consecteturadipiscing </a>.
+                                            </p>
+                                        </div>
+                                    </li>
+                                    <li class="media">
+                                        <a href="#" class="pull-left">
+                                            <img src="https://bootdey.com/img/Content/user_2.jpg" alt="" class="img-circle">
+                                        </a>
+                                        <div class="media-body">
+                                    <span class="text-muted pull-right">
+                                        <small class="text-muted">30 min ago</small>
+                                    </span>
+                                            <strong class="text-success">@LaurenceCorreil</strong>
+                                            <p>
+                                                Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                                                Lorem ipsum dolor <a href="#">#ipsumdolor </a>adipiscing elit.
+                                            </p>
+                                        </div>
+                                    </li>
+                                    <li class="media">
+                                        <a href="#" class="pull-left">
+                                            <img src="https://bootdey.com/img/Content/user_3.jpg" alt="" class="img-circle">
+                                        </a>
+                                        <div class="media-body">
+                                    <span class="text-muted pull-right">
+                                        <small class="text-muted">30 min ago</small>
+                                    </span>
+                                            <strong class="text-success">@JohnNida</strong>
+                                            <p>
+                                                Lorem ipsum dolor <a href="#">#sitamet</a> sit amet, consectetur adipiscing elit.
+                                            </p>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </div>
                         </div>
                     </div>
-                </div>
 
+                </div>
             </div>
         </div>
-    </div>
-
+    </th:block>
 </section>

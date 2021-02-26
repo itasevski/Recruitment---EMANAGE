@@ -39,8 +39,8 @@ public class UserServiceImpl implements UserService {
 
         if(userType.equals("person")) usernameCheck(nameArg);
 
-        return userType.equals("person") ? this.personRepository.save(new Person(email, this.passwordEncoder.encode(password), Role.ROLE_USER, nameArg))
-                : this.companyRepository.save(new Company(email, this.passwordEncoder.encode(password), Role.ROLE_USER, nameArg));
+        return userType.equals("person") ? this.personRepository.save(new Person(email, this.passwordEncoder.encode(password), Role.ROLE_USER, "../images/profilePictures/person-default.png" ,nameArg))
+                : this.companyRepository.save(new Company(email, this.passwordEncoder.encode(password), Role.ROLE_USER, "../images/profilePictures/company-default.png" , nameArg));
     }
 
     @Override
@@ -58,6 +58,12 @@ public class UserServiceImpl implements UserService {
     @Override
     public Company findCompanyById(String id) {
         return this.companyRepository.findById(id).get();
+    }
+
+    @Override
+    public User getUserInstanceByUUID(String uuid) {
+        Optional<Person> user = this.personRepository.findByUsername(uuid);
+        return user.isPresent() ? user.get() : this.companyRepository.findById(uuid).get();
     }
 
     // == my methods ==

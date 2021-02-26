@@ -15,4 +15,6 @@ public interface UserService extends UserDetailsService {
 
     Company findCompanyById(String id);
 
+    User getUserInstanceByUUID(String uuid);
+
 }

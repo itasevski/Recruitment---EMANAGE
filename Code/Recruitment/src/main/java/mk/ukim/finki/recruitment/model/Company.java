@@ -24,8 +24,8 @@ public class Company extends User {
 
     public Company() {}
 
-    public Company(String email, String password, Role role, String name) {
-        super(email, password, role);
+    public Company(String email, String password, Role role, String imageSourceUrl, String name) {
+        super(email, password, role, imageSourceUrl);
         this.name = name;
     }
 
