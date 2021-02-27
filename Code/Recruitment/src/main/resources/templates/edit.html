@@ -1,4 +1,6 @@
-<section id="">
+<section id=""
+         xmlns:th="http://www.thymeleaf.org"
+         xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
     <div class="container">
         <div class="row gutters">
             <div class="col-xl-3 col-lg-3 col-md-12 col-sm-12 col-12">
@@ -7,21 +9,21 @@
                         <div class="account-settings">
                             <div class="user-profile">
                                 <div class="user-avatar">
-                                    <img src="https://bootdey.com/img/Content/avatar/avatar7.png" alt="Maxwell Admin">
+                                    <img th:src="${imgsrc}">
                                 </div>
-                                <h5 class="user-name">Yuki Hayashi</h5>
-                                <h6 class="user-email">yuki@Maxwell.com</h6>
+                                <h5 class="user-name" th:text="${username}"></h5>
+                                <h6 class="user-email" th:text="${email}"></h6>
                             </div>
                             <div class="about">
                                 <h5>About</h5>
-                                <h6>I'm Yuki. Full Stack Designer I enjoy creating user-centric, delightful and human experiences.</h6>
+                                <h6 th:if="${bio != null}" th:text="${bio}"></h6>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
             <div class="col-xl-9 col-lg-9 col-md-12 col-sm-12 col-12">
-                <div class="card h-100">
+                <form method="post" action="/profile/edit" class="card h-100" enctype="multipart/form-data">
                     <div class="card-body">
                         <div class="row gutters">
                             <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
@@ -30,14 +32,51 @@
                             <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
                                 <div class="form-group">
                                     <label for="fullName">Name</label>
-                                    <input type="text" class="form-control" id="fullName" placeholder="Full name...">
+                                    <input type="text" class="form-control" id="fullName" name="fullName" placeholder="Full name..." th:value="${username}">
                                 </div>
                             </div>
-
                             <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
                                 <div class="form-group">
                                     <label for="phone">Bio</label>
-                                    <input type="text" class="form-control" id="phone" placeholder="Write something about yourself...">
+                                    <textarea class="form-control" id="phone" name="bio" placeholder="Write something about yourself..." rows="4" cols="50" th:text="(${bio} != null ? ${bio} : '')"></textarea>
+                                </div>
+                            </div>
+                            <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
+                                <div class="form-group">
+                                    <label>What is your role/status?</label>
+                                    <br>
+                                    <th:block th:if="${role == null}">
+                                        <label class="radio-inline" style="padding-right: 20px">
+                                            <input type="radio" name="accountRole" value="looking for job" checked>&nbsp;&nbsp;Looking for job
+                                        </label>
+                                    </th:block>
+                                    <th:block th:if="${role != null}">
+                                        <label class="radio-inline" style="padding-right: 20px">
+                                            <input type="radio" name="accountRole" value="looking for job" th:checked="${role == 'looking for job'}">&nbsp;&nbsp;Looking for job
+                                        </label>
+                                    </th:block>
+                                    <label class="radio-inline" style="padding-right: 20px">
+                                        <input type="radio" name="accountRole" value="intern" th:checked="${role == 'intern'}">&nbsp;&nbsp;Intern
+                                    </label>
+                                    <label class="radio-inline" style="padding-right: 20px">
+                                        <input type="radio" name="accountRole" value="employee" th:checked="${role == 'employee'}">&nbsp;&nbsp;Employee
+                                    </label>
+                                    <th:block th:if="${isCompany}">
+                                        <label class="radio-inline" style="padding-right: 20px">
+                                            <input type="radio" name="accountRole" value="company" th:checked="${role == 'company'}">&nbsp;&nbsp;Company
+                                        </label>
+                                    </th:block>
+                                    <th:block sec:authorize="hasRole('ROLE_ADMIN')">
+                                        <label class="radio-inline" style="padding-right: 20px">
+                                            <input type="radio" name="accountRole" value="admin" th:checked="${role == 'admin'}">&nbsp;&nbsp;Admin
+                                        </label>
+                                    </th:block>
+                                </div>
+                            </div>
+                            <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
+                                <div class="form-group">
+                                    <label for="profilePicture">Choose your profile picture:</label>
+                                    <input type="file" id="profilePicture" name="profilePicture">
                                 </div>
                             </div>
                         </div>
@@ -45,16 +84,12 @@
                     <div class="row gutters">
                         <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
                             <div class="text-right">
-                                <form method="get" action="/profile" class="editButton">
-                                    <button type="submit" class="btn btn-secondary">Cancel</button>
-                                </form>
-                                <form method="post" action="/profile" class="editButton">
-                                    <button type="submit" class="btn btn-primary">Update</button>
-                                </form>
+                                <button type="button" class="btn btn-secondary editButton"><a href="/profile" style="color: whitesmoke;">Cancel</a></button>
+                                <button type="submit" class="btn btn-primary editButton">Update</button>
                             </div>
                         </div>
                     </div>
-                </div>
+                </form>
             </div>
         </div>
     </div>

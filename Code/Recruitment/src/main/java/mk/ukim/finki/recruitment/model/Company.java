@@ -19,14 +19,11 @@ public class Company extends User {
     @Column(name = "id")
     private String id;
 
-    private String name;
-
 
     public Company() {}
 
-    public Company(String email, String password, Role role, String imageSourceUrl, String name) {
-        super(email, password, role, imageSourceUrl);
-        this.name = name;
+    public Company(String email, String password, String name, Role role, String imageSourceUrl, String bio, String accountRole) {
+        super(email, password, name, role, imageSourceUrl, bio, accountRole);
     }
 
     @Override

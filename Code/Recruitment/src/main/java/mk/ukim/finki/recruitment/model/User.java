@@ -7,6 +7,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.Lob;
 import javax.persistence.MappedSuperclass;
 import java.util.Collection;
 import java.util.Collections;
@@ -18,11 +19,14 @@ public abstract class User implements UserDetails {
 
     private String email;
     private String password;
+    private String name;
 
     @Enumerated(value = EnumType.STRING)
     private Role role;
 
     private String imageSourceUrl;
+    private String bio;
+    private String accountRole;
 
     private boolean isAccountNonExpired = true;
     private boolean isAccountNonLocked = true;
@@ -31,11 +35,14 @@ public abstract class User implements UserDetails {
 
     public User() {}
 
-    public User(String email, String password, Role role, String imageSourceUrl) {
+    public User(String email, String password, String name, Role role, String imageSourceUrl, String bio, String accountRole) {
         this.email = email;
         this.password = password;
+        this.name = name;
         this.role = role;
         this.imageSourceUrl = imageSourceUrl;
+        this.bio = bio;
+        this.accountRole = accountRole;
     }
 
     @Override

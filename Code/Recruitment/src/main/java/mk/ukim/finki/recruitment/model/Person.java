@@ -20,8 +20,8 @@ public class Person extends User {
 
     public Person() {}
 
-    public Person(String email, String password, Role role, String imageSourceUrl, String username) {
-        super(email, password, role, imageSourceUrl);
+    public Person(String email, String password, String name, Role role, String imageSourceUrl, String bio, String username, String accountRole) {
+        super(email, password, name, role, imageSourceUrl, bio, accountRole);
         this.username = username;
     }
 }

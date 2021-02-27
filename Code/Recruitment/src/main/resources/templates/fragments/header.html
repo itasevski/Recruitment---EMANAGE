@@ -24,12 +24,12 @@
 
             <div class="collapse navbar-collapse justify-content-end" id="navbarsExampleDefault">
                 <ul class="navbar-nav m-auto nmlist">
-                    <th:block th:if="${username != null}">
+                    <th:block th:if="${#request.getRemoteUser() != null}">
                         <th:block sec:authorize="hasRole('ROLE_ADMIN')">
-                            <li class="nav-item" style="color:whitesmoke;" th:text="${username} + ' (admin)'"></li>
+                            <li class="nav-item" style="color:whitesmoke;" th:text="${#request.getRemoteUser()} + ' (admin)'"></li>
                         </th:block>
                         <th:block sec:authorize="hasRole('ROLE_USER')">
-                            <li class="nav-item" style="color:whitesmoke;" th:text="${username}"></li>
+                            <li class="nav-item" style="color:whitesmoke;" th:text="${#request.getRemoteUser()}"></li>
                         </th:block>
                     </th:block>
                     <th:block sec:authorize="isAuthenticated()">

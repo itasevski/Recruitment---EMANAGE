@@ -11,6 +11,7 @@ import mk.ukim.finki.recruitment.service.UserService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.Optional;
 
@@ -39,8 +40,8 @@ public class UserServiceImpl implements UserService {
 
         if(userType.equals("person")) usernameCheck(nameArg);
 
-        return userType.equals("person") ? this.personRepository.save(new Person(email, this.passwordEncoder.encode(password), Role.ROLE_USER, "../images/profilePictures/person-default.png" ,nameArg))
-                : this.companyRepository.save(new Company(email, this.passwordEncoder.encode(password), Role.ROLE_USER, "../images/profilePictures/company-default.png" , nameArg));
+        return userType.equals("person") ? this.personRepository.save(new Person(email, this.passwordEncoder.encode(password), nameArg, Role.ROLE_USER, "../images/profilePictures/person-default.png", null, nameArg, null))
+                : this.companyRepository.save(new Company(email, this.passwordEncoder.encode(password), nameArg, Role.ROLE_USER, "../images/profilePictures/company-default.png", null, null));
     }
 
     @Override
@@ -66,7 +67,20 @@ public class UserServiceImpl implements UserService {
         return user.isPresent() ? user.get() : this.companyRepository.findById(uuid).get();
     }
 
-    // == my methods ==
+    @Override
+    public void update(String uuid, String name, String bio, String accountRole, MultipartFile profilePicture, String imageSourceUrl) {
+        User user = getUserInstanceByUUID(uuid);
+
+        if(name != null && !name.isEmpty()) user.setName(name);
+        if(bio != null && !bio.isEmpty()) user.setBio(bio);
+        if(accountRole != null && !accountRole.isEmpty()) user.setAccountRole(accountRole);
+        if(!profilePicture.isEmpty()) user.setImageSourceUrl(imageSourceUrl);
+
+        if (user instanceof Person) this.personRepository.save((Person) user);
+        else this.companyRepository.save((Company) user);
+    }
+
+    // === my methods === //
 
     public void emailCheck(String email) {
          if(this.personRepository.existsByEmail(email) || this.companyRepository.existsByEmail(email)) throw new EmailAlreadyAssociatedException(email);
