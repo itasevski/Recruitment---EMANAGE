@@ -20,8 +20,8 @@ import java.io.IOException;
 @RequestMapping("/profile")
 public class ProfileController {
 
-//    public static final String resourcesFolderImagePPPath = "C:\\Users\\User\\Desktop\\Recruitment---EMANAGE\\Code\\Recruitment\\src\\main\\resources\\static\\testdir\\";
     public static final String resourcesFolderImagePPPath = "C:\\Users\\User\\Desktop\\Recruitment---EMANAGE\\Code\\Recruitment\\target\\classes\\static\\customProfilePictures\\";
+
     private UserService userService;
 
     public ProfileController(UserService userService) {
@@ -75,7 +75,7 @@ public class ProfileController {
         User user = this.userService.getUserInstanceByUUID(request.getRemoteUser());
 
         if(user instanceof Person) {
-            model.addAttribute("username", user.getName());
+            model.addAttribute("username", user.getUsername());
             model.addAttribute("isPerson", true);
         }
         else  {

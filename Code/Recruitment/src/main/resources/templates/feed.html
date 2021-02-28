@@ -1,16 +1,20 @@
-<section id="feed">
+<section id="feed"
+         xmlns:th="http://www.thymeleaf.org"
+         xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
     <div class="row">
         <div class="col-md-6 col-xs-12 col-md-offset-3">
             <div class="panel-info">
-                <div class="panel-body">
+                <div class="panel-body" th:if="${isCompany}">
                     <h3 class="panel-info">Post an ad</h3>
                 </div>
                 <div class="panel-body">
-                    <div class="form-group">
-                        <input class="form-control form-control-lg" type="text" placeholder="Header">
-                        <textarea class="form-control" placeholder="Body" rows="3"></textarea>
-                    </div>
-                    <a href="javascript:void(0)" class="btn btn-info btn-sm pull-right waves-effect waves-light">Post</a>
+                    <th:block th:if="${isCompany}">
+                        <div class="form-group">
+                                <input class="form-control form-control-lg" type="text" placeholder="Header" style="padding-bottom: 10px">
+                                <textarea class="form-control" placeholder="Body" rows="3"></textarea>
+                        </div>
+                        <a href="javascript:void(0)" class="btn btn-info btn-sm pull-right waves-effect waves-light">Post</a>
+                    </th:block>
                     <br>
                     <br>
                     <div class="panel-heading">
@@ -24,54 +28,31 @@
                                 <div class="media-left">
                                     <a class="avatar avatar-online" href="javascript:void(0)">
                                         <img src="https://bootdey.com/img/Content/avatar/avatar1.png" alt="...">
+                                        <!-- slika na kompanija tuka -->
                                         <i></i>
                                     </a>
                                 </div>
                                 <div class="media-body">
-                                    <small class="text-muted pull-right">Just now</small>
-                                    <h4 class="media-heading">@Ramon Dunn</h4>
+                                    <small class="text-muted pull-right">Just now</small> <!-- timestamp tuka -->
+                                    <h4 class="media-heading">@Ramon Dunn</h4> <!-- ime na kompanija tuka -->
+                                    <div style="font-size: 20px; font-weight: bold; padding-bottom: 7px;">Title: Lorem Ipsum</div> <!-- header na oglas tuka -->
                                     <div>Lorem ipsum Veniam aliquip culpa laboris minim tempor labore
-                                        commodo officia veniam non in in in.</div>
-                                    <button type="button" class="btn btn-outline-info media-bottom" style="margin-top: 10px">I'm interested</button>
+                                        commodo officia veniam non in in in.</div><!-- telo na oglas tuka -->
+                                    <form method="post" action="/feed">
+                                        <th:block th:if="${isAdmin == null && isCompany == null}">
+                                            <button type="button" class="btn btn-outline-info media-bottom" style="margin-top: 12px">I'm interested</button>
+                                        </th:block>
+                                        <th:block th:if="${isPerson}">
+                                            <button type="button" class="btn btn-outline-success media-bottom" style="margin-top: 12px">Send e-mail</button>
+                                        </th:block>
+                                        <th:block th:if="${isCompany == true || isAdmin == true}">
+                                            <button type="button" class="btn btn-outline-danger media-bottom" style="margin-top: 12px">Delete</button>
+                                        </th:block>
+                                    </form>
                                 </div>
                             </div>
                         </li>
                         <br>
-                        <li class="list-group-item">
-                            <div class="media">
-                                <div class="media-left">
-                                    <a class="avatar avatar-busy" href="javascript:void(0)">
-                                        <img src="https://bootdey.com/img/Content/avatar/avatar2.png" alt="...">
-                                        <i></i>
-                                    </a>
-                                </div>
-                                <div class="media-body">
-                                    <small class="text-muted pull-right">38 minutes ago</small>
-                                    <h4 class="media-heading">@Scott Sanders</h4>
-                                    <div>Lorem ipsum Laborum sit laborum cillum proident dolore culpa
-                                        reprehenderit qui enim labore do mollit in.</div>
-                                    <button type="button" class="btn btn-outline-info media-bottom" style="margin-top: 10px">I'm interested</button>
-                                </div>
-                            </div>
-                        </li>
-                        <br>
-                        <li class="list-group-item">
-                            <div class="media">
-                                <div class="media-left">
-                                    <a class="avatar avatar-online" href="javascript:void(0)">
-                                        <img src="https://bootdey.com/img/Content/avatar/avatar3.png" alt="...">
-                                        <i></i>
-                                    </a>
-                                </div>
-                                <div class="media-body">
-                                    <small class="text-muted pull-right">2 hours ago</small>
-                                    <h4 class="media-heading">@Nina Wells</h4>
-                                    <div>Lorem ipsum Culpa mollit ex mollit magna dolore dolore dolore
-                                        tempor velit magna enim ad dolore dolore dolore.</div>
-                                    <button type="button" class="btn btn-outline-info media-bottom" style="margin-top: 10px">I'm interested</button>
-                                </div>
-                            </div>
-                        </li>
                     </ul>
                     <br>
                     <span class="text-info" style="">163K users active</span>
