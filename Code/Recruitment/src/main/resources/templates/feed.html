@@ -8,13 +8,15 @@
                     <h3 class="panel-info">Post an ad</h3>
                 </div>
                 <div class="panel-body">
-                    <th:block th:if="${isCompany}">
-                        <div class="form-group">
-                                <input class="form-control form-control-lg" type="text" placeholder="Header" style="padding-bottom: 10px">
-                                <textarea class="form-control" placeholder="Body" rows="3"></textarea>
-                        </div>
-                        <a href="javascript:void(0)" class="btn btn-info btn-sm pull-right waves-effect waves-light">Post</a>
-                    </th:block>
+                    <form method="post" action="/feed">
+                        <th:block th:if="${isCompany}">
+                            <div class="form-group">
+                                    <input class="form-control form-control-lg" type="text" name="header" placeholder="Header" style="padding-bottom: 10px" required>
+                                    <textarea class="form-control" placeholder="Body" name="body" rows="3" required></textarea>
+                            </div>
+                            <button type="submit" class="btn btn-info btn-sm pull-right waves-effect waves-light">Post</button>
+                        </th:block>
+                    </form>
                     <br>
                     <br>
                     <div class="panel-heading">
@@ -23,39 +25,45 @@
                     <div class="clearfix"></div>
                     <hr class="margin-bottom-10">
                     <ul class="list-group list-group-dividered list-group-full">
-                        <li class="list-group-item">
-                            <div class="media">
-                                <div class="media-left">
-                                    <a class="avatar avatar-online" href="javascript:void(0)">
-                                        <img src="https://bootdey.com/img/Content/avatar/avatar1.png" alt="...">
-                                        <!-- slika na kompanija tuka -->
-                                        <i></i>
-                                    </a>
+                        <th:block th:each="ad : ${allAds}">
+                            <li class="list-group-item">
+                                <div class="media">
+                                    <div class="media-left">
+                                        <a class="avatar avatar-online" href="javascript:void(0)">
+                                            <img th:if="${#request.getRemoteUser() != null}" th:src="${ad.getCompany().getImageSourceUrl()}" alt="...">
+                                            <img th:if="${#request.getRemoteUser() == null}" th:src="${defaultProfilePicture}" alt="...">
+                                            <i></i>
+                                        </a>
+                                    </div>
+                                    <div class="media-body">
+                                        <small class="text-muted pull-right" th:text="${ad.getTimestamp()}"></small>
+                                        <h4 class="media-heading" th:text="${ad.getCompany().getName()}"></h4>
+                                        <div style="font-size: 20px; font-weight: bold; padding-bottom: 7px;" th:text="'Title: ' + ${ad.getHeader()}"></div>
+                                        <div th:text="${ad.getBody()}"></div>
+                                        <form method="get" th:action="@{'/feed/person/{id}' (id=${ad.getId()})}">
+                                            <th:block th:if="${isAdmin == null && isCompany == null}">
+                                                <button type="submit" name="userButton" value="interested" class="btn btn-outline-info media-bottom" style="margin-top: 12px">I'm interested</button>
+                                            </th:block>
+                                            <th:block th:if="${isPerson}">
+                                                <button type="submit" name="userButton" value="email" class="btn btn-outline-success media-bottom" style="margin-top: 12px">Send e-mail</button>
+                                            </th:block>
+                                        </form>
+                                        <form method="get" th:action="@{'/feed/other/{id}' (id=${ad.getId()})}">
+                                            <th:block th:if="${ad.getCompany().getId() == #request.getRemoteUser() || isAdmin == true}">
+                                                <button type="submit" name="otherButton" value="delete" class="btn btn-outline-danger media-bottom" style="margin-top: 12px">Delete</button>
+                                            </th:block>
+                                            <th:block th:if="${ad.getCompany().getId() == #request.getRemoteUser()}">
+                                                <button type="submit" name="otherButton" value="edit" class="btn btn-outline-dark media-bottom" style="margin-top: 12px">Edit</button>
+                                            </th:block>
+                                        </form>
+                                    </div>
                                 </div>
-                                <div class="media-body">
-                                    <small class="text-muted pull-right">Just now</small> <!-- timestamp tuka -->
-                                    <h4 class="media-heading">@Ramon Dunn</h4> <!-- ime na kompanija tuka -->
-                                    <div style="font-size: 20px; font-weight: bold; padding-bottom: 7px;">Title: Lorem Ipsum</div> <!-- header na oglas tuka -->
-                                    <div>Lorem ipsum Veniam aliquip culpa laboris minim tempor labore
-                                        commodo officia veniam non in in in.</div><!-- telo na oglas tuka -->
-                                    <form method="post" action="/feed">
-                                        <th:block th:if="${isAdmin == null && isCompany == null}">
-                                            <button type="button" class="btn btn-outline-info media-bottom" style="margin-top: 12px">I'm interested</button>
-                                        </th:block>
-                                        <th:block th:if="${isPerson}">
-                                            <button type="button" class="btn btn-outline-success media-bottom" style="margin-top: 12px">Send e-mail</button>
-                                        </th:block>
-                                        <th:block th:if="${isCompany == true || isAdmin == true}">
-                                            <button type="button" class="btn btn-outline-danger media-bottom" style="margin-top: 12px">Delete</button>
-                                        </th:block>
-                                    </form>
-                                </div>
-                            </div>
-                        </li>
-                        <br>
+                            </li>
+                            <br/>
+                        </th:block>
                     </ul>
                     <br>
-                    <span class="text-info" style="">163K users active</span>
+                    <span class="text-info" style="" th:text="${numActiveUsers} + ' active users'"></span>
                 </div>
             </div>
         </div>

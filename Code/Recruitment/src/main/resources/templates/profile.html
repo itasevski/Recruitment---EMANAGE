@@ -26,7 +26,7 @@
         </div>
     </div>
     <br>
-    <th:block sec:authorize="hasRole('ROLE_USER')" th:if="${isPerson}">
+    <th:block sec:authorize="hasRole('ROLE_USER')" th:if="${isPerson}"> <!-- ZA KORISNIK -->
         <div class="container">
             <div class="row bootstrap snippets bootdeys">
                 <div class="col-md-8 col-sm-12">
@@ -39,28 +39,75 @@
                                 <br>
                                 <div class="clearfix"></div>
                                 <ul class="media-list">
-                                    <li class="media">
-                                        <a href="#" class="pull-left">
-                                            <img src="https://bootdey.com/img/Content/user_1.jpg" alt="" class="img-circle">
-                                            <!-- slika na kompanija ovde -->
-                                        </a>
+                                    <li class="media" th:each="ad : ${personAds}">
+                                        <img th:src="${ad.getCompany().getImageSourceUrl()}" alt="" class="img-circle">
                                         <div class="media-body">
-                                    <span class="text-muted pull-right">
-                                        <small class="text-muted">30 min ago</small> <!-- timestamp ovde -->
-                                    </span>
-                                            <strong class="text-success">@MartinoMont</strong> <!-- ime na kompanija ovde -->
-                                            <p style="font-size: 20px; font-weight: bold;">Title: Lorem Ipsum</p> <!-- header na oglas ovde -->
-                                            <p>
-                                                Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                                                Lorem ipsum dolor sit amet, <a href="#">#consecteturadipiscing </a>.
-                                            </p> <!-- telo na oglas ovde -->
+                                            <span class="text-muted pull-right">
+                                                <small class="text-muted" th:text="${ad.getTimestamp()}"></small>
+                                            </span>
+                                            <strong class="text-success" th:text="${ad.getCompany().getName()}"></strong>
+                                            <p style="font-size: 20px; font-weight: bold;" th:text="${ad.getHeader()}"></p>
+                                            <p th:text="${ad.getBody()}"></p>
+                                            <form method="get" th:action="@{'/profile/person_buttons/{id}' (id=${ad.getId()})}">
+                                                <th:block>
+                                                    <button type="submit" name="personButton" value="email" class="btn btn-outline-success media-bottom">Send e-mail</button>
+                                                    <button type="submit" name="personButton" value="delete" class="btn btn-outline-danger media-bottom">Delete from saved ads</button>
+                                                </th:block>
+                                            </form>
                                         </div>
                                     </li>
                                 </ul>
                             </div>
                         </div>
                     </div>
-
+                </div>
+            </div>
+        </div>
+    </th:block>
+    <th:block sec:authorize="hasRole('ROLE_USER')" th:if="${isCompany}"> <!-- ZA KOMPANIJA -->
+        <div class="container">
+            <div class="row bootstrap snippets bootdeys">
+                <div class="col-md-8 col-sm-12">
+                    <div class="comment-wrapper">
+                        <div class="panel panel-info">
+                            <div class="panel-heading">
+                                <h3 class="panel-title">Posted ads</h3>
+                            </div>
+                            <div class="panel-body">
+                                <br>
+                                <div class="clearfix"></div>
+                                <ul class="media-list">
+                                    <li class="media" th:each="ad : ${companyAds}">
+                                        <img th:src="${ad.getCompany().getImageSourceUrl()}" alt="" class="img-circle">
+                                        <div class="media-body">
+                                            <span class="text-muted pull-right">
+                                                <small class="text-muted" th:text="${ad.getTimestamp()}"></small>
+                                            </span>
+                                                <strong class="text-success" th:text="${ad.getCompany().getName()}"></strong>
+                                                <p style="font-size: 20px; font-weight: bold;" th:text="${ad.getHeader()}"></p>
+                                                <p th:text="${ad.getBody()}"></p>
+                                            <form method="get" th:action="@{'/profile/company_buttons_front/{id}' (id=${ad.getId()})}">
+                                                <th:block th:if="${isAdmin == null && isCompany == null}">
+                                                    <button type="submit" name="personButton" value="interested" class="btn btn-outline-info media-bottom">I'm interested</button>
+                                                </th:block>
+                                                <th:block th:if="${isPerson}">
+                                                    <button type="submit" name="personButton" value="email" class="btn btn-outline-success media-bottom">Send e-mail</button>
+                                                </th:block>
+                                            </form>
+                                            <form method="get" th:action="@{'/profile/company_buttons_back/{id}' (id=${ad.getId()})}">
+                                                <th:block th:if="${ad.getCompany().getId() == #request.getRemoteUser() || isAdmin == true}">
+                                                    <button type="submit" name="otherButton" value="delete" class="btn btn-outline-danger media-bottom">Delete</button>
+                                                </th:block>
+                                                <th:block th:if="${ad.getCompany().getId() == #request.getRemoteUser()}">
+                                                    <button type="submit" name="otherButton" value="edit" class="btn btn-outline-dark media-bottom">Edit</button>
+                                                </th:block>
+                                            </form>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

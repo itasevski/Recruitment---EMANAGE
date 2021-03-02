@@ -9,6 +9,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.thymeleaf.templateresolver.ClassLoaderTemplateResolver;
 
+import java.time.format.DateTimeFormatter;
+
 @SpringBootApplication
 @ServletComponentScan
 public class RecruitmentApplication {
@@ -21,5 +23,7 @@ public class RecruitmentApplication {
     PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder(10);
     }
+
+    public static DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
 
 }

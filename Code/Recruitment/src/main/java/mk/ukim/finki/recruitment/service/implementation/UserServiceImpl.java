@@ -3,6 +3,7 @@ package mk.ukim.finki.recruitment.service.implementation;
 import mk.ukim.finki.recruitment.model.Company;
 import mk.ukim.finki.recruitment.model.Person;
 import mk.ukim.finki.recruitment.model.User;
+import mk.ukim.finki.recruitment.model.enumerations.AccountStatus;
 import mk.ukim.finki.recruitment.model.enumerations.Role;
 import mk.ukim.finki.recruitment.model.exceptions.*;
 import mk.ukim.finki.recruitment.repository.CompanyRepository;
@@ -40,8 +41,8 @@ public class UserServiceImpl implements UserService {
 
         if(userType.equals("person")) usernameCheck(nameArg);
 
-        return userType.equals("person") ? this.personRepository.save(new Person(email, this.passwordEncoder.encode(password), nameArg, Role.ROLE_USER, "../images/profilePictures/person-default.png", null, nameArg, null))
-                : this.companyRepository.save(new Company(email, this.passwordEncoder.encode(password), nameArg, Role.ROLE_USER, "../images/profilePictures/company-default.png", null, null));
+        return userType.equals("person") ? this.personRepository.save(new Person(nameArg, email, this.passwordEncoder.encode(password), nameArg, Role.ROLE_USER, "../images/profilePictures/person-default.png", null, null, AccountStatus.ACTIVE))
+                : this.companyRepository.save(new Company(email, this.passwordEncoder.encode(password), nameArg, Role.ROLE_USER, "../images/profilePictures/company-default.png", null, null, AccountStatus.ACTIVE));
     }
 
     @Override
@@ -78,6 +79,13 @@ public class UserServiceImpl implements UserService {
 
         if (user instanceof Person) this.personRepository.save((Person) user);
         else this.companyRepository.save((Company) user);
+    }
+
+    @Override
+    public long getActiveUsers() {
+        return this.personRepository.findAll().stream()
+                .filter(person -> person.getRole() == Role.ROLE_USER && person.getAccountStatus() == AccountStatus.ACTIVE)
+                .count();
     }
 
     // === my methods === //

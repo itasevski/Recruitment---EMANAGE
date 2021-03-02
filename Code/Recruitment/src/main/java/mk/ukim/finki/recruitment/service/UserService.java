@@ -18,4 +18,6 @@ public interface UserService extends UserDetailsService {
 
     void update(String uuid, String name, String bio, String accountRole, MultipartFile profilePicture, String imageSourceUrl);
 
+    long getActiveUsers();
+
 }
