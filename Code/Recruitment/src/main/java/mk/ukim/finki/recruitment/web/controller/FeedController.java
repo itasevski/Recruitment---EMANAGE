@@ -13,6 +13,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 
 @Controller
 @RequestMapping("/feed")
@@ -27,8 +28,8 @@ public class FeedController {
     }
 
     @GetMapping
-    public String getFeedPage(HttpServletRequest request, Model model,
-                              @RequestParam(required = false) String error) {
+    public String getFeedPage(@RequestParam(required = false) String error,
+                              HttpServletRequest request, Model model) {
         if(error != null && !error.isEmpty()) model.addAttribute("hasError", true);
 
         modifyModel(request, model);
@@ -71,6 +72,24 @@ public class FeedController {
         return "redirect:/feed";
     }
 
+    @PostMapping("/sort")
+    public String postSort(@RequestParam String sortSelect,
+                           HttpServletRequest request, Model model) {
+        modifyModelWithSort(sortSelect, request, model);
+
+        model.addAttribute("bodyContent", "feed");
+        return "master-template";
+    }
+
+    @PostMapping("/search")
+    public String postSearch(@RequestParam String queryString,
+                             HttpServletRequest request, Model model) {
+        modifyModelWithSearch(queryString, request, model);
+
+        model.addAttribute("bodyContent", "feed");
+        return "master-template";
+    }
+
     @PostMapping
     public String postFeedPage(@RequestParam String header,
                                @RequestParam String body,
@@ -103,7 +122,72 @@ public class FeedController {
 
         model.addAttribute("feedSearchFlag", true);
 
-        model.addAttribute("allAds", this.adService.getAllAds());
+        List<Ad> ads = this.adService.getAllAds();
+
+        if(ads.size() == 0) model.addAttribute("noAdsPosted", true);
+
+        model.addAttribute("allAds", ads);
+        model.addAttribute("numActiveUsers", this.userService.getActiveUsers());
+    }
+
+    public void modifyModelWithSort(String sortCriteria, HttpServletRequest request, Model model) {
+        if(request.getRemoteUser() != null) {
+            User user = this.userService.getUserInstanceByUUID(request.getRemoteUser());
+
+            if (user instanceof Person && user.getRole() == Role.ROLE_ADMIN) {
+                model.addAttribute("isAdmin", true);
+                model.addAttribute("username", request.getRemoteUser());
+            }
+            else if (user instanceof Person) {
+                model.addAttribute("isPerson", true);
+                model.addAttribute("username", request.getRemoteUser());
+            } else {
+                model.addAttribute("isCompany", true);
+                model.addAttribute("username", user.getName());
+            }
+        }
+        else {
+            model.addAttribute("defaultProfilePicture", "../images/profilePictures/company-default.png");
+        }
+
+        model.addAttribute("feedSearchFlag", true);
+        model.addAttribute(sortCriteria, true);
+
+        List<Ad> ads = this.adService.getSortedAds(sortCriteria);
+
+        if(ads.size() == 0) model.addAttribute("noAdsPosted", true);
+
+        model.addAttribute("allAds", ads);
+        model.addAttribute("numActiveUsers", this.userService.getActiveUsers());
+    }
+
+    public void modifyModelWithSearch(String queryString, HttpServletRequest request, Model model) {
+        if(request.getRemoteUser() != null) {
+            User user = this.userService.getUserInstanceByUUID(request.getRemoteUser());
+
+            if (user instanceof Person && user.getRole() == Role.ROLE_ADMIN) {
+                model.addAttribute("isAdmin", true);
+                model.addAttribute("username", request.getRemoteUser());
+            }
+            else if (user instanceof Person) {
+                model.addAttribute("isPerson", true);
+                model.addAttribute("username", request.getRemoteUser());
+            } else {
+                model.addAttribute("isCompany", true);
+                model.addAttribute("username", user.getName());
+            }
+        }
+        else {
+            model.addAttribute("defaultProfilePicture", "../images/profilePictures/company-default.png");
+        }
+
+        model.addAttribute("feedSearchFlag", true);
+
+        List<Ad> ads = this.adService.getAdsByQueryString(queryString);
+
+        if(ads.size() == 0) model.addAttribute("notFoundByQuery", true);
+
+        model.addAttribute("allAds", ads);
         model.addAttribute("numActiveUsers", this.userService.getActiveUsers());
     }
 

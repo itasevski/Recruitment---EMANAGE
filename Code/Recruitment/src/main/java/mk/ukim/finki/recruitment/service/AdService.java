@@ -13,6 +13,10 @@ public interface AdService {
 
     List<Ad> getAdsByPersonUsername(String username);
 
+    List<Ad> getSortedAds(String sortCriteria);
+
+    List<Ad> getAdsByQueryString(String queryString);
+
     void save(String header, String body, Company company); // Company
 
     void delete(Long id);

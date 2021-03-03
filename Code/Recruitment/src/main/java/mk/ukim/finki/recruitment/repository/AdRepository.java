@@ -12,4 +12,6 @@ public interface AdRepository extends JpaRepository<Ad, Long> {
 
     List<Ad> getAdsByCompany_Id(String id);
 
+    List<Ad> findByTimestampContainingOrHeaderContainingIgnoreCaseOrCompany_NameContainingIgnoreCase(String timestamp, String header, String companyName);
+
 }

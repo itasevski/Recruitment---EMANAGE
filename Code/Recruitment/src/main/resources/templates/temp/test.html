@@ -80,32 +80,85 @@
     </nav>
 </header>
 
-<div class="ex-page-content bootstrap snippets bootdeys results">
-    <div class="container">
-        <div class="row">
-            <div class="col-sm-6">
-                <svg class="svg-box" width="380px" height="500px" viewBox="0 0 837 1045" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:sketch="http://www.bohemiancoding.com/sketch/ns">
-                    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" sketch:type="MSPage">
-                        <path d="M353,9 L626.664028,170 L626.664028,487 L353,642 L79.3359724,487 L79.3359724,170 L353,9 Z" id="Polygon-1" stroke="#3bafda" stroke-width="6" sketch:type="MSShapeGroup"></path>
-                        <path d="M78.5,529 L147,569.186414 L147,648.311216 L78.5,687 L10,648.311216 L10,569.186414 L78.5,529 Z" id="Polygon-2" stroke="#7266ba" stroke-width="6" sketch:type="MSShapeGroup"></path>
-                        <path d="M773,186 L827,217.538705 L827,279.636651 L773,310 L719,279.636651 L719,217.538705 L773,186 Z" id="Polygon-3" stroke="#f76397" stroke-width="6" sketch:type="MSShapeGroup"></path>
-                        <path d="M639,529 L773,607.846761 L773,763.091627 L639,839 L505,763.091627 L505,607.846761 L639,529 Z" id="Polygon-4" stroke="#00b19d" stroke-width="6" sketch:type="MSShapeGroup"></path>
-                        <path d="M281,801 L383,861.025276 L383,979.21169 L281,1037 L179,979.21169 L179,861.025276 L281,801 Z" id="Polygon-5" stroke="#ffaa00" stroke-width="6" sketch:type="MSShapeGroup"></path>
-                    </g>
-                </svg>
-            </div>
-
-            <div class="col-sm-6">
-                <div class="message-box">
-                    <h1 class="m-b-0">Results of your applications</h1>
-                    <p>No results have been posted for your applications yet.</p>
-                    <div class="buttons-con">
+<section id="feed"
+         xmlns:th="http://www.thymeleaf.org"
+         xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+    <div class="row">
+        <div class="col-md-6 col-xs-12 col-md-offset-3">
+            <div class="panel-info">
+                <div class="panel-body" th:if="${isCompany}">
+                    <h3 class="panel-info">Post an ad</h3>
+                </div>
+                <div class="panel-body">
+                    <form method="post" action="/feed">
+                        <th:block th:if="${isCompany}">
+                            <div class="form-group">
+                                <input class="form-control form-control-lg" type="text" name="header" placeholder="Header" style="margin-bottom: 7px" required>
+                                <textarea class="form-control" placeholder="Body" name="body" rows="3" required></textarea>
+                            </div>
+                            <button type="submit" class="btn btn-info btn-sm pull-right waves-effect waves-light">Post</button>
+                        </th:block>
+                    </form>
+                    <br>
+                    <br>
+                    <div th:if="${hasError}" class="text-danger" style="font-size: 25px">THE AD YOU SELECTED IS ALREADY SAVED IN YOUR LIST.</div>
+                    <div class="panel-heading">
+                        <h3 class="panel-title">Jobs/Internships</h3>
                     </div>
+                    <label for="sortSelect" style="margin-left: 470px; font-weight: bold; font-size: 18px">Sort by: </label>
+                    <select class="form-select" id="sortSelect" name="sortSelect" aria-label="Default select example" style="margin-left: 470px;">
+                        <option value="nto">Date (newest to oldest)</option>
+                        <option value="otn">Date (oldest to newest)</option>
+                        <option value="title">Title</option>
+                        <option value="companyName">Company name</option>
+                    </select>
+                    <div class="clearfix"></div>
+                    <hr class="margin-bottom-10">
+                    <ul class="list-group list-group-dividered list-group-full">
+                        <th:block th:each="ad : ${allAds}">
+                            <li class="list-group-item">
+                                <div class="media">
+                                    <div class="media-left">
+                                        <a class="avatar avatar-online" href="javascript:void(0)">
+                                            <img th:if="${#request.getRemoteUser() != null}" th:src="${ad.getCompany().getImageSourceUrl()}" alt="...">
+                                            <img th:if="${#request.getRemoteUser() == null}" th:src="${defaultProfilePicture}" alt="...">
+                                            <i></i>
+                                        </a>
+                                    </div>
+                                    <div class="media-body">
+                                        <small class="text-muted pull-right" th:text="${ad.getTimestamp()}"></small>
+                                        <h4 class="media-heading" th:text="${ad.getCompany().getName()}"></h4>
+                                        <div style="font-size: 20px; font-weight: bold; padding-bottom: 7px;" th:text="'Title: ' + ${ad.getHeader()}"></div>
+                                        <div th:text="${ad.getBody()}"></div>
+                                        <form method="get" th:action="@{'/feed/person/{id}' (id=${ad.getId()})}">
+                                            <th:block sec:authorize="isAuthenticated()" th:if="${isAdmin == null && isCompany == null}">
+                                                <button type="submit" name="userButton" value="interested" class="btn btn-outline-info media-bottom" style="margin-top: 12px">I'm interested</button>
+                                            </th:block>
+                                            <th:block th:if="${isPerson}">
+                                                <button type="submit" name="userButton" value="email" class="btn btn-outline-success media-bottom" style="margin-top: 12px">Send e-mail</button>
+                                            </th:block>
+                                        </form>
+                                        <form method="get" th:action="@{'/feed/other/{id}' (id=${ad.getId()})}">
+                                            <th:block th:if="${ad.getCompany().getId() == #request.getRemoteUser() || isAdmin == true}">
+                                                <button type="submit" name="otherButton" value="delete" class="btn btn-outline-danger media-bottom" style="margin-top: 12px">Delete</button>
+                                            </th:block>
+                                            <th:block th:if="${ad.getCompany().getId() == #request.getRemoteUser()}">
+                                                <button type="submit" name="otherButton" value="edit" class="btn btn-outline-dark media-bottom" style="margin-top: 12px">Edit</button>
+                                            </th:block>
+                                        </form>
+                                    </div>
+                                </div>
+                            </li>
+                            <br/>
+                        </th:block>
+                    </ul>
+                    <br>
+                    <span class="text-info" style="" th:text="${numActiveUsers} + ' active users'"></span>
                 </div>
             </div>
         </div>
     </div>
-</div>
+</section>
 
 
 <footer id="footer" data-stellar-background-ratio="0.5" style="height: 95px;">

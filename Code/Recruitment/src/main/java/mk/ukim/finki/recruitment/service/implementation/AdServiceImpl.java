@@ -26,19 +26,32 @@ public class AdServiceImpl implements AdService {
     @Override
     public List<Ad> getAllAds() {
         return this.adRepository.findAll().stream()
-                .sorted(Ad.byDateOrIdComparator).collect(Collectors.toList());
+                .sorted(Ad.byDateOrIdComparatorNTO).collect(Collectors.toList());
     }
 
     @Override
     public List<Ad> getAdsByCompanyId(String id) {
         return this.adRepository.getAdsByCompany_Id(id).stream()
-                .sorted(Ad.byDateOrIdComparator).collect(Collectors.toList());
+                .sorted(Ad.byDateOrIdComparatorNTO).collect(Collectors.toList());
     }
 
     @Override
     public List<Ad> getAdsByPersonUsername(String username) {
         return this.personRepository.findByUsername(username).get().getAds().stream()
-                .sorted(Ad.byDateOrIdComparator).collect(Collectors.toList());
+                .sorted(Ad.byDateOrIdComparatorNTO).collect(Collectors.toList());
+    }
+
+    @Override
+    public List<Ad> getSortedAds(String sortCriteria) {
+        if(sortCriteria.equals("nto")) return getAllAds();
+        else if(sortCriteria.equals("otn")) return this.adRepository.findAll().stream().sorted(Ad.byDateOrIdComparatorOTN).collect(Collectors.toList());
+        else if(sortCriteria.equals("title")) return this.adRepository.findAll().stream().sorted(Ad.byHeaderOrIdComparator).collect(Collectors.toList());
+        else return this.adRepository.findAll().stream().sorted(Ad.byCompanyNameOrIdComparator).collect(Collectors.toList());
+    }
+
+    @Override
+    public List<Ad> getAdsByQueryString(String queryString) {
+        return this.adRepository.findByTimestampContainingOrHeaderContainingIgnoreCaseOrCompany_NameContainingIgnoreCase(queryString, queryString, queryString);
     }
 
     @Override

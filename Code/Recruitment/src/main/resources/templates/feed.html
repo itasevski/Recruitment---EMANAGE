@@ -23,8 +23,20 @@
                     <div class="panel-heading">
                         <h3 class="panel-title">Jobs/Internships</h3>
                     </div>
+                    <form method="post" action="/feed/sort">
+                        <label for="sortSelect" style="margin-left: 470px; font-weight: bold; font-size: 18px;">Sort by: </label>
+                        <select class="form-select" id="sortSelect" name="sortSelect" aria-label="Default select example" style="margin-left: 470px; margin-bottom: 7px;">
+                            <option value="nto" th:selected="${nto}">Date (newest to oldest)</option>
+                            <option value="otn" th:selected="${otn}">Date (oldest to newest)</option>
+                            <option value="title" th:selected="${title}">Title</option>
+                            <option value="companyName" th:selected="${companyName}">Company name</option>
+                        </select>
+                        <button class="btn btn-primary" style="margin-left: 470px;">Sort <i class="fa fa-sort"></i></button>
+                    </form>
                     <div class="clearfix"></div>
                     <hr class="margin-bottom-10">
+                    <div th:if="${noAdsPosted}" class="text-danger" style="font-size: 20px;">No posted ads yet!</div>
+                    <div th:if="${notFoundByQuery}" class="text-danger" style="font-size: 20px;">There are no results found matching your search criteria.</div>
                     <ul class="list-group list-group-dividered list-group-full">
                         <th:block th:each="ad : ${allAds}">
                             <li class="list-group-item">

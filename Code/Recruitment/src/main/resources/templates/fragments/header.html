@@ -9,11 +9,11 @@
                 <span class="navbar-toggler-icon"></span>
             </button>
             <th:block th:if="${feedSearchFlag}">
-                <form class="form-inline my-2 my-lg-0 entitySearch">
+                <form method="post" action="/feed/search" class="form-inline my-2 my-lg-0 entitySearch">
                     <div class="input-group input-group-sm">
                         <input type="text" class="form-control" aria-label="Small"
                                aria-describedby="inputGroup-sizing-sm"
-                               placeholder="Search ads..." name="attrName" id="attrName">
+                               placeholder="Search ads..." name="queryString" id="attrName">
                         <div class="input-group-append">
                             <input class="btn btn-secondary btn-number" type="submit" value="Search"/>
                         </div>

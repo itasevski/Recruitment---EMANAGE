@@ -15,7 +15,16 @@ import java.util.List;
 public class Ad {
 
     @Transient
-    public static Comparator<Ad> byDateOrIdComparator = Comparator.comparing(Ad::getTimestampAsDate).reversed()
+    public static Comparator<Ad> byDateOrIdComparatorNTO = Comparator.comparing(Ad::getTimestampAsDate).reversed()
+            .thenComparing(Ad::getId);
+    @Transient
+    public static Comparator<Ad> byDateOrIdComparatorOTN = Comparator.comparing(Ad::getTimestampAsDate)
+            .thenComparing(Ad::getId);
+    @Transient
+    public static Comparator<Ad> byHeaderOrIdComparator = Comparator.comparing(Ad::getAdHeaderLowerCase)
+            .thenComparing(Ad::getId);
+    @Transient
+    public static Comparator<Ad> byCompanyNameOrIdComparator = Comparator.comparing(Ad::getAdOwnerNameLowerCase)
             .thenComparing(Ad::getId);
 
     @Id
@@ -43,6 +52,14 @@ public class Ad {
 
     public LocalDateTime getTimestampAsDate() {
         return LocalDateTime.parse(this.getTimestamp(), RecruitmentApplication.formatter);
+    }
+
+    public String getAdOwnerNameLowerCase() {
+        return getCompany().getName().toLowerCase();
+    }
+
+    public String getAdHeaderLowerCase() {
+        return getHeader().toLowerCase();
     }
 
 }
