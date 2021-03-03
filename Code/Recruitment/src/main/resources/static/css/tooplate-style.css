@@ -6,9 +6,10 @@ http://www.tooplate.com/view/2106-soft-landing
 	
 */
  
-  @import url('https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400');
+@import url('https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400');
+@import url('http://fonts.googleapis.com/css?family=Open+Sans:200,300');
 
-  body {
+body {
     font-family: 'Open Sans', sans-serif;
     overflow-x: hidden;
     background: #f9f9f9;
@@ -850,11 +851,15 @@ http://www.tooplate.com/view/2106-soft-landing
   margin-top: -17px;
 }
 
+#edit {
+  left: 10%;
+}
+
 .nmlist li {
   padding-bottom: 10px;
 }
 
-body{
+body {
   margin-top:20px;
   background:#eee;
 }
@@ -951,6 +956,23 @@ body{
 
 .editButton {
   display: inline;
+}
+
+body {
+  font-family: 'Open Sans',Arial,Helvetica,Sans-Serif;
+}
+
+.modal-header-info {
+  color:#fff;
+  padding:9px 15px;
+  border-bottom:1px solid #eee;
+  background-color: #5bc0de;
+  -webkit-border-top-left-radius: 5px;
+  -webkit-border-top-right-radius: 5px;
+  -moz-border-radius-topleft: 5px;
+  -moz-border-radius-topright: 5px;
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
 }
 
 /* MATEJ */

@@ -5,7 +5,9 @@ import mk.ukim.finki.recruitment.RecruitmentApplication;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.List;
 
 @Data
 @Entity
@@ -24,7 +26,7 @@ public class Ad {
     private String body;
     private String timestamp;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private Company company;
 
     public Ad () {}

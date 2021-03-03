@@ -21,7 +21,7 @@ public class Company extends User {
     @Column(name = "id")
     private String id;
 
-    @OneToMany(mappedBy = "company")
+    @OneToMany(mappedBy = "company", fetch = FetchType.LAZY)
     private List<Ad> ads;
 
     public Company() {}

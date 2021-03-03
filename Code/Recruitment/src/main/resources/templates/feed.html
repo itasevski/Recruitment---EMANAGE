@@ -11,7 +11,7 @@
                     <form method="post" action="/feed">
                         <th:block th:if="${isCompany}">
                             <div class="form-group">
-                                    <input class="form-control form-control-lg" type="text" name="header" placeholder="Header" style="padding-bottom: 10px" required>
+                                    <input class="form-control form-control-lg" type="text" name="header" placeholder="Header" style="margin-bottom: 7px" required>
                                     <textarea class="form-control" placeholder="Body" name="body" rows="3" required></textarea>
                             </div>
                             <button type="submit" class="btn btn-info btn-sm pull-right waves-effect waves-light">Post</button>
@@ -19,6 +19,7 @@
                     </form>
                     <br>
                     <br>
+                    <div th:if="${hasError}" class="text-danger" style="font-size: 25px">THE AD YOU SELECTED IS ALREADY SAVED IN YOUR LIST.</div>
                     <div class="panel-heading">
                         <h3 class="panel-title">Jobs/Internships</h3>
                     </div>
@@ -41,7 +42,7 @@
                                         <div style="font-size: 20px; font-weight: bold; padding-bottom: 7px;" th:text="'Title: ' + ${ad.getHeader()}"></div>
                                         <div th:text="${ad.getBody()}"></div>
                                         <form method="get" th:action="@{'/feed/person/{id}' (id=${ad.getId()})}">
-                                            <th:block th:if="${isAdmin == null && isCompany == null}">
+                                            <th:block sec:authorize="isAuthenticated()" th:if="${isAdmin == null && isCompany == null}">
                                                 <button type="submit" name="userButton" value="interested" class="btn btn-outline-info media-bottom" style="margin-top: 12px">I'm interested</button>
                                             </th:block>
                                             <th:block th:if="${isPerson}">

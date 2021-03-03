@@ -1,9 +1,11 @@
 package mk.ukim.finki.recruitment.web.controller;
 
+import mk.ukim.finki.recruitment.model.Ad;
 import mk.ukim.finki.recruitment.model.Company;
 import mk.ukim.finki.recruitment.model.Person;
 import mk.ukim.finki.recruitment.model.User;
 import mk.ukim.finki.recruitment.model.enumerations.Role;
+import mk.ukim.finki.recruitment.model.exceptions.AdAlreadySavedException;
 import mk.ukim.finki.recruitment.service.AdService;
 import mk.ukim.finki.recruitment.service.UserService;
 import org.springframework.stereotype.Controller;
@@ -25,33 +27,47 @@ public class FeedController {
     }
 
     @GetMapping
-    public String getFeedPage(HttpServletRequest request, Model model) {
+    public String getFeedPage(HttpServletRequest request, Model model,
+                              @RequestParam(required = false) String error) {
+        if(error != null && !error.isEmpty()) model.addAttribute("hasError", true);
+
         modifyModel(request, model);
 
         model.addAttribute("bodyContent", "feed");
         return "master-template";
     }
 
-    // TODO: 01.3.2021 -> da se implementira ovoj metod, za kopcinjata "I'm interested" i "Send e-mail"
     @GetMapping("/person/{id}")
     public String adInterestedOrEmail(@PathVariable Long id,
                                       @RequestParam String userButton,
                                       HttpServletRequest request) {
         if(userButton.equals("interested")) {
-            this.adService.save(request.getRemoteUser(), id);
+            try {
+                this.adService.save(request.getRemoteUser(), id);
+            }
+            catch (AdAlreadySavedException exception) {
+                return "redirect:/feed?error=" + exception.getMessage();
+            }
         }
-//        else {
-//            // email...
-//        }
+        else {
+            Company adOwner = this.adService.getAdOwner(id);
+            return "redirect:/email?address=" + adOwner.getEmail() + "&subject=" + this.adService.findById(id).getHeader()
+                    + "&feedFlag=true";
+        }
+
         return "redirect:/profile";
     }
 
-    // TODO: 01.3.2021 -> da se kreira edit stranica za editiranje na oglasite na kompanijata
     @GetMapping("/other/{id}")
     public String adEditOrDelete(@PathVariable Long id,
                                  @RequestParam String otherButton) {
         if(otherButton.equals("delete")) this.adService.delete(id);
-        //else // edit...
+        else {
+            Ad ad = this.adService.findById(id);
+            return "redirect:/adedit?adId=" + ad.getId() + "&header=" + ad.getHeader() + "&body=" + ad.getBody() + "&feedFlag=true"
+                    + "&companyId=" + ad.getCompany().getId();
+        }
+
         return "redirect:/feed";
     }
 

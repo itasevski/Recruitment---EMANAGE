@@ -21,4 +21,10 @@ public interface AdService {
 
     void delete(String username, Long id);
 
+    Company getAdOwner(Long id);
+
+    Ad findById(Long id);
+
+    void updateAd(Long id, String header, String body);
+
 }

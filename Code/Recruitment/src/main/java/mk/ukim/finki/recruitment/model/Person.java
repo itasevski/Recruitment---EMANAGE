@@ -5,10 +5,8 @@ import lombok.EqualsAndHashCode;
 import mk.ukim.finki.recruitment.model.enumerations.AccountStatus;
 import mk.ukim.finki.recruitment.model.enumerations.Role;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.ManyToMany;
-import javax.persistence.Table;
+import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @EqualsAndHashCode(callSuper = true)

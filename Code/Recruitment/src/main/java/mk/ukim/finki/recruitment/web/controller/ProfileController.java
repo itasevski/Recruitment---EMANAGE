@@ -1,5 +1,6 @@
 package mk.ukim.finki.recruitment.web.controller;
 
+import mk.ukim.finki.recruitment.model.Ad;
 import mk.ukim.finki.recruitment.model.Company;
 import mk.ukim.finki.recruitment.model.Person;
 import mk.ukim.finki.recruitment.model.User;
@@ -48,11 +49,16 @@ public class ProfileController {
     // TODO: 02.3.2021 -> implementiraj mailto funkcija i dovrsi go metodov
     // za profilot na korisnikot, da ima opcii za prakjanje email ili brisenje na nekoj zacuvan oglas
     @GetMapping("/person_buttons/{id}")
-    public String adEmailOrDelete(@PathVariable Long id,
+    public String adDeleteOrEmail(@PathVariable Long id,
                                   @RequestParam String personButton,
                                   HttpServletRequest request) {
         if(personButton.equals("delete")) this.adService.delete(request.getRemoteUser(), id);
-        //else // email...
+        else {
+            Company adOwner = this.adService.getAdOwner(id);
+            return "redirect:/email?address=" + adOwner.getEmail() + "&subject=" + this.adService.findById(id).getHeader()
+                    + "&profileFlag=true";
+        }
+
         return "redirect:/profile";
     }
 
@@ -64,7 +70,12 @@ public class ProfileController {
                                       @RequestParam String personButton,
                                       HttpServletRequest request) {
         if(personButton.equals("interested")) this.adService.save(request.getRemoteUser(), id);
-        //else // email...
+        else {
+            Company adOwner = this.adService.getAdOwner(id);
+            return "redirect:/email?address=" + adOwner.getEmail() + "&subject=" + this.adService.findById(id).getHeader()
+                    + "&profileFlag=true";
+        }
+
         return "redirect:/profile";
     }
 
@@ -75,7 +86,12 @@ public class ProfileController {
     public String adEditOrDelete(@PathVariable Long id,
                                  @RequestParam String otherButton) {
         if(otherButton.equals("delete")) this.adService.delete(id);
-        //else // edit...
+        else {
+            Ad ad = this.adService.findById(id);
+            return "redirect:/adedit?adId=" + ad.getId() + "&header=" + ad.getHeader() + "&body=" + ad.getBody() + "&profileFlag=true"
+                    + "&companyId=" + ad.getCompany().getId();
+        }
+
         return "redirect:/profile";
     }
 

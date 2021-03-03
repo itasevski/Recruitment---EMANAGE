@@ -70,5 +70,23 @@ public class AdServiceImpl implements AdService {
         this.personRepository.save(person);
     }
 
+    @Override
+    public Company getAdOwner(Long id) {
+        return this.adRepository.findById(id).get().getCompany();
+    }
+
+    @Override
+    public Ad findById(Long id) {
+        return this.adRepository.findById(id).get();
+    }
+
+    @Override
+    public void updateAd(Long id, String header, String body) {
+        Ad ad = this.adRepository.findById(id).get();
+        ad.setHeader(header);
+        ad.setBody(body);
+        this.adRepository.save(ad);
+    }
+
 
 }
