@@ -1,5 +1,9 @@
 package mk.ukim.finki.recruitment.web.controller;
 
+import mk.ukim.finki.recruitment.model.Person;
+import mk.ukim.finki.recruitment.model.User;
+import mk.ukim.finki.recruitment.model.enumerations.Role;
+import mk.ukim.finki.recruitment.service.UserService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -7,6 +11,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 
 @Controller
@@ -16,24 +21,20 @@ public class EmailController {
     private static boolean feedFlag = false;
     private static boolean profileFlag = false;
 
+    private UserService userService;
+
+    public EmailController(UserService userService) {
+        this.userService = userService;
+    }
+
     @GetMapping
     public String getEmailPage(@RequestParam String address,
                                @RequestParam String subject,
                                @RequestParam(required = false) String feedFlag,
                                @RequestParam(required = false) String profileFlag,
+                               HttpServletRequest request,
                                Model model) {
-        model.addAttribute("emailAddress", address);
-        model.addAttribute("adSubject", subject);
-        if(feedFlag != null && !feedFlag.isEmpty()) {
-            model.addAttribute("feedFlag", true);
-            EmailController.feedFlag = true;
-            EmailController.profileFlag = false;
-        }
-        if(profileFlag != null && !profileFlag.isEmpty()) {
-            model.addAttribute("profileFlag", true);
-            EmailController.feedFlag = false;
-            EmailController.profileFlag = true;
-        }
+        modifyModel(address, subject, feedFlag, profileFlag, request, model);
 
         model.addAttribute("bodyContent", "email");
         return "master-template";
@@ -62,6 +63,24 @@ public class EmailController {
             out.append(Character.isLetterOrDigit(ch) ? ch : String.format("%%%02X", (int) ch));
         }
         return out.toString();
+    }
+
+    public void modifyModel(String address, String subject, String feedFlag, String profileFlag,
+                            HttpServletRequest request, Model model) {
+        model.addAttribute("username", this.userService.getUserInstanceByUUID(request.getRemoteUser()).getUsername());
+        model.addAttribute("isPerson", true);
+        model.addAttribute("emailAddress", address);
+        model.addAttribute("adSubject", subject);
+        if(feedFlag != null && !feedFlag.isEmpty()) {
+            model.addAttribute("feedFlag", true);
+            EmailController.feedFlag = true;
+            EmailController.profileFlag = false;
+        }
+        if(profileFlag != null && !profileFlag.isEmpty()) {
+            model.addAttribute("profileFlag", true);
+            EmailController.feedFlag = false;
+            EmailController.profileFlag = true;
+        }
     }
 
 }

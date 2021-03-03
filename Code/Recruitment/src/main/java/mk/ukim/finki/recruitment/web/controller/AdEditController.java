@@ -1,5 +1,8 @@
 package mk.ukim.finki.recruitment.web.controller;
 
+import mk.ukim.finki.recruitment.model.Person;
+import mk.ukim.finki.recruitment.model.User;
+import mk.ukim.finki.recruitment.model.enumerations.Role;
 import mk.ukim.finki.recruitment.service.AdService;
 import mk.ukim.finki.recruitment.service.UserService;
 import org.springframework.stereotype.Controller;
@@ -8,6 +11,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+
+import javax.servlet.http.HttpServletRequest;
 
 @Controller
 @RequestMapping("/adedit")
@@ -31,7 +36,31 @@ public class AdEditController {
                                 @RequestParam(required = false) String feedFlag,
                                 @RequestParam(required = false) String profileFlag,
                                 @RequestParam String companyId,
+                                HttpServletRequest request,
                                 Model model) {
+        modifyModel(adId, header, body, feedFlag, profileFlag, companyId, request, model);
+
+        model.addAttribute("bodyContent", "adEdit");
+        return "master-template";
+    }
+
+    // TODO: 03.3.2021
+    @PostMapping
+    public String postAdEditPage(@RequestParam String adId,
+                                 @RequestParam String header,
+                                 @RequestParam String body) {
+        this.adService.updateAd(Long.parseLong(adId), header, body);
+
+        if(AdEditController.feedFlag) return "redirect:/feed";
+        else return "redirect:/profile";
+    }
+
+    // ==================================================== //
+
+    public void modifyModel(String adId, String header, String body, String feedFlag, String profileFlag, String companyId,
+                            HttpServletRequest request, Model model) {
+        model.addAttribute("username", this.userService.getUserInstanceByUUID(request.getRemoteUser()).getName());
+
         model.addAttribute("adId", adId);
         model.addAttribute("header", header);
         model.addAttribute("body", body);
@@ -47,19 +76,6 @@ public class AdEditController {
         }
         model.addAttribute("imageSourceUrl", this.userService.findCompanyById(companyId).getImageSourceUrl());
 
-        model.addAttribute("bodyContent", "adEdit");
-        return "master-template";
-    }
-
-    // TODO: 03.3.2021
-    @PostMapping
-    public String postAdEditPage(@RequestParam String adId,
-                                 @RequestParam String header,
-                                 @RequestParam String body) {
-        this.adService.updateAd(Long.parseLong(adId), header, body);
-
-        if(AdEditController.feedFlag) return "redirect:/feed";
-        else return "redirect:/profile";
     }
 
 }
