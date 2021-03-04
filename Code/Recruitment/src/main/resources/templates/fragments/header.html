@@ -1,5 +1,6 @@
 <!--HEADER-->
-<header xmlns:th="http://www.thymeleaf.org"
+<header id="myHeader"
+        xmlns:th="http://www.thymeleaf.org"
         xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
     <nav class="navbar navbar-dark bg-dark" style="color: #1c2e4a">
         <div class="container">
@@ -35,6 +36,15 @@
                             <form action="/profile" method="get">
                                 <button type="submit" class="btn btn-success"><i class="fa fa-user"></i>
                                     View profile
+                                </button>
+                            </form>
+                        </li>
+                    </th:block>
+                    <th:block sec:authorize="isAuthenticated()">
+                        <li class="nav-item">
+                            <form action="/profiles" method="get">
+                                <button type="submit" class="btn btn-primary"><i class="fa fa-users"></i>
+                                    People/Companies
                                 </button>
                             </form>
                         </li>

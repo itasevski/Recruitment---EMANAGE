@@ -82,8 +82,10 @@ public class FeedController {
     }
 
     @PostMapping("/search")
-    public String postSearch(@RequestParam String queryString,
+    public String postSearch(@RequestParam(required = false) String queryString,
                              HttpServletRequest request, Model model) {
+        if(queryString == null || queryString.isEmpty()) return "redirect:/feed";
+
         modifyModelWithSearch(queryString, request, model);
 
         model.addAttribute("bodyContent", "feed");

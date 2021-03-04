@@ -29,7 +29,7 @@
 
 <body style="margin: 0; padding: 0;">
 
-<header xmlns:th="http://www.thymeleaf.org">
+<header xmlns:th="http://www.thymeleaf.org" id="myHeader">
     <nav class="navbar navbar-dark bg-dark" style="color: #1c2e4a">
         <div class="container">
             <a class="navbar-brand" href="#" style="font-family: Georgia, serif; font-size: 25px">EMANAGE</a>
@@ -80,80 +80,128 @@
     </nav>
 </header>
 
-<section id="feed"
-         xmlns:th="http://www.thymeleaf.org"
-         xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
-    <div class="row">
-        <div class="col-md-6 col-xs-12 col-md-offset-3">
-            <div class="panel-info">
-                <div class="panel-body" th:if="${isCompany}">
-                    <h3 class="panel-info">Post an ad</h3>
-                </div>
-                <div class="panel-body">
-                    <form method="post" action="/feed">
-                        <th:block th:if="${isCompany}">
-                            <div class="form-group">
-                                <input class="form-control form-control-lg" type="text" name="header" placeholder="Header" style="margin-bottom: 7px" required>
-                                <textarea class="form-control" placeholder="Body" name="body" rows="3" required></textarea>
-                            </div>
-                            <button type="submit" class="btn btn-info btn-sm pull-right waves-effect waves-light">Post</button>
-                        </th:block>
-                    </form>
-                    <br>
-                    <br>
-                    <div th:if="${hasError}" class="text-danger" style="font-size: 25px">THE AD YOU SELECTED IS ALREADY SAVED IN YOUR LIST.</div>
-                    <div class="panel-heading">
-                        <h3 class="panel-title">Jobs/Internships</h3>
+<section xmlns:th="http://www.thymeleaf.org">
+    <div class="courses-area section-padding40 fix">
+        <div class="container">
+            <div class="row justify-content-start">
+                <div class="col-xl-7 col-lg-8">
+                    <div class="section-tittle text-center mb-55 divsInline">
+                        <h2>All active profiles</h2>
                     </div>
-                    <label for="sortSelect" style="margin-left: 470px; font-weight: bold; font-size: 18px">Sort by: </label>
-                    <select class="form-select" id="sortSelect" name="sortSelect" aria-label="Default select example" style="margin-left: 470px;">
-                        <option value="nto">Date (newest to oldest)</option>
-                        <option value="otn">Date (oldest to newest)</option>
-                        <option value="title">Title</option>
-                        <option value="companyName">Company name</option>
+                </div>
+                <form method="post" action="/feed/sort" class="divsInline" style="margin-left: 170px;">
+                    <label for="profileSelect" style="font-weight: bold; font-size: 18px;">Filter by: </label>
+                    <select class="form-select" id="profileSelect" name="profileSelect" aria-label="Default select example" style="margin-left: 5px; margin-right: 5px;">
+                        <option value="all">All</option>
+                        <option value="company">Company</option>
+                        <option value="person">Person</option>
                     </select>
-                    <div class="clearfix"></div>
-                    <hr class="margin-bottom-10">
-                    <ul class="list-group list-group-dividered list-group-full">
-                        <th:block th:each="ad : ${allAds}">
-                            <li class="list-group-item">
-                                <div class="media">
-                                    <div class="media-left">
-                                        <a class="avatar avatar-online" href="javascript:void(0)">
-                                            <img th:if="${#request.getRemoteUser() != null}" th:src="${ad.getCompany().getImageSourceUrl()}" alt="...">
-                                            <img th:if="${#request.getRemoteUser() == null}" th:src="${defaultProfilePicture}" alt="...">
-                                            <i></i>
-                                        </a>
-                                    </div>
-                                    <div class="media-body">
-                                        <small class="text-muted pull-right" th:text="${ad.getTimestamp()}"></small>
-                                        <h4 class="media-heading" th:text="${ad.getCompany().getName()}"></h4>
-                                        <div style="font-size: 20px; font-weight: bold; padding-bottom: 7px;" th:text="'Title: ' + ${ad.getHeader()}"></div>
-                                        <div th:text="${ad.getBody()}"></div>
-                                        <form method="get" th:action="@{'/feed/person/{id}' (id=${ad.getId()})}">
-                                            <th:block sec:authorize="isAuthenticated()" th:if="${isAdmin == null && isCompany == null}">
-                                                <button type="submit" name="userButton" value="interested" class="btn btn-outline-info media-bottom" style="margin-top: 12px">I'm interested</button>
-                                            </th:block>
-                                            <th:block th:if="${isPerson}">
-                                                <button type="submit" name="userButton" value="email" class="btn btn-outline-success media-bottom" style="margin-top: 12px">Send e-mail</button>
-                                            </th:block>
-                                        </form>
-                                        <form method="get" th:action="@{'/feed/other/{id}' (id=${ad.getId()})}">
-                                            <th:block th:if="${ad.getCompany().getId() == #request.getRemoteUser() || isAdmin == true}">
-                                                <button type="submit" name="otherButton" value="delete" class="btn btn-outline-danger media-bottom" style="margin-top: 12px">Delete</button>
-                                            </th:block>
-                                            <th:block th:if="${ad.getCompany().getId() == #request.getRemoteUser()}">
-                                                <button type="submit" name="otherButton" value="edit" class="btn btn-outline-dark media-bottom" style="margin-top: 12px">Edit</button>
-                                            </th:block>
-                                        </form>
-                                    </div>
-                                </div>
-                            </li>
-                            <br/>
-                        </th:block>
-                    </ul>
-                    <br>
-                    <span class="text-info" style="" th:text="${numActiveUsers} + ' active users'"></span>
+                    <button class="btn btn-primary" style="">Filter <i class="fa fa-filter"></i></button>
+                </form>
+                <form method="post" action="/profiles/search" class="divsInline" style="margin-left: 811px; margin-top: -30px;">
+                    <div class="input-group">
+                        <div class="form-outline">
+                            <input type="search" id="form1" class="form-control" placeholder="Search profiles..." style="height: 40px; width: 250px;"/>
+                        </div>
+                        <button type="submit" class="btn btn-primary" style="height: 40px;">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+                </form>
+            </div>
+            <div class="row">
+                <div class="col-lg-4 profileItem">
+                    <div class="properties properties2 mb-30">
+                        <div class="properties__card">
+                            <div class="properties__img overlay1">
+                                <a href="#"><img src="../../static/images/featured1.png" alt=""></a>
+                            </div>
+                            <div class="properties__caption">
+                                <p>User Experience</p>
+                                <h3><a href="#" style="font-size: 33px; font-weight: bold;">Fundamental of UX for Application design</a></h3>
+                                <p>The automated process all your website tasks. Discover tools and techniques to engage effectively with vulnerable children and young people.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4 profileItem">
+                    <div class="properties properties2 mb-30">
+                        <div class="properties__card">
+                            <div class="properties__img overlay1">
+                                <a href="#"><img src="../../static/images/featured2.png" alt=""></a>
+                            </div>
+                            <div class="properties__caption">
+                                <p>User Experience</p>
+                                <h3><a href="#">Fundamental of UX for Application design</a></h3>
+                                <p>The automated process all your website tasks. Discover tools and techniques to engage effectively with vulnerable children and young people.</p>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4 profileItem">
+                    <div class="properties properties2 mb-30">
+                        <div class="properties__card">
+                            <div class="properties__img overlay1">
+                                <a href="#"><img src="../../static/images/featured3.png" alt=""></a>
+                            </div>
+                            <div class="properties__caption">
+                                <p>User Experience</p>
+                                <h3><a href="#">Fundamental of UX for Application design</a></h3>
+                                <p>The automated process all your website tasks. Discover tools and techniques to engage effectively with vulnerable children and young people.</p>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4 profileItem">
+                    <div class="properties properties2 mb-30">
+                        <div class="properties__card">
+                            <div class="properties__img overlay1">
+                                <a href="#"><img src="../../static/images/featured4.png" alt=""></a>
+                            </div>
+                            <div class="properties__caption">
+                                <p>User Experience</p>
+                                <h3><a href="#">Fundamental of UX for Application design</a></h3>
+                                <p>The automated process all your website tasks. Discover tools and techniques to engage effectively with vulnerable children and young people.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4 profileItem">
+                    <div class="properties properties2 mb-30">
+                        <div class="properties__card">
+                            <div class="properties__img overlay1">
+                                <a href="#"><img src="../../static/images/featured5.png" alt=""></a>
+                            </div>
+                            <div class="properties__caption">
+                                <p>User Experience</p>
+                                <h3><a href="#">Fundamental of UX for Application design</a></h3>
+                                <p>The automated process all your website tasks. Discover tools and techniques to engage effectively with vulnerable children and young people.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4 profileItem">
+                    <div class="properties properties2 mb-30">
+                        <div class="properties__card">
+                            <div class="properties__img overlay1">
+                                <a href="#"><img src="../../static/images/featured6.png" alt=""></a>
+                            </div>
+                            <div class="properties__caption">
+                                <p>User Experience</p>
+                                <h3><a href="#">Fundamental of UX for Application design</a></h3>
+                                <p>The automated process all your website tasks. Discover tools and techniques to engage effectively with vulnerable children and young people.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row justify-content-center" style="margin-top: 35px;">
+                <div class="col-xl-7 col-lg-8">
+                    <div class="section-tittle text-center mt-40">
+                        <a href="#myHeader" class="border-btn">Back to top of page</a>
+                    </div>
                 </div>
             </div>
         </div>

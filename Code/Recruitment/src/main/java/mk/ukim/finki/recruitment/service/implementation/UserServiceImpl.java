@@ -5,6 +5,7 @@ import mk.ukim.finki.recruitment.model.Person;
 import mk.ukim.finki.recruitment.model.User;
 import mk.ukim.finki.recruitment.model.enumerations.AccountStatus;
 import mk.ukim.finki.recruitment.model.enumerations.Role;
+import mk.ukim.finki.recruitment.model.enumerations.UserType;
 import mk.ukim.finki.recruitment.model.exceptions.*;
 import mk.ukim.finki.recruitment.repository.CompanyRepository;
 import mk.ukim.finki.recruitment.repository.PersonRepository;
@@ -14,7 +15,10 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -30,6 +34,33 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public List<User> getAllUsers() {
+        List<Company> companies = getCompanyProfiles();
+        List<Person> people = getPersonProfiles();
+
+        return Stream.concat(companies.stream(), people.stream()).collect(Collectors.toList());
+    }
+
+    @Override
+    public List<Company> getCompanyProfiles() {
+        return this.companyRepository.findAll();
+    }
+
+    @Override
+    public List<Person> getPersonProfiles() {
+        return this.personRepository.findAll();
+    }
+
+    @Override
+    public List<User> getUsersByQueryString(String queryString) {
+        List<Company> companies = this.companyRepository.findByNameContainingIgnoreCase(queryString);
+        List<Person> people = this.personRepository.findByUsernameContainingIgnoreCaseOrNameContainingIgnoreCase(queryString, queryString);
+
+        return Stream.concat(companies.stream(), people.stream()).collect(Collectors.toList());
+    }
+
+
+    @Override
     public User register(String nameArg, String email, String password, String repeatedPassword, String userType) {
         if(nameArg == null || nameArg.isEmpty() ||
                 email == null || email.isEmpty()) {
@@ -41,8 +72,8 @@ public class UserServiceImpl implements UserService {
 
         if(userType.equals("person")) usernameCheck(nameArg);
 
-        return userType.equals("person") ? this.personRepository.save(new Person(nameArg, email, this.passwordEncoder.encode(password), nameArg, Role.ROLE_USER, "../images/profilePictures/person-default.png", null, null, AccountStatus.ACTIVE))
-                : this.companyRepository.save(new Company(email, this.passwordEncoder.encode(password), nameArg, Role.ROLE_USER, "../images/profilePictures/company-default.png", null, null, AccountStatus.ACTIVE));
+        return userType.equals("person") ? this.personRepository.save(new Person(nameArg, email, this.passwordEncoder.encode(password), nameArg, Role.ROLE_USER, "../images/profilePictures/person-default.png", null, null, AccountStatus.ACTIVE, UserType.PERSON))
+                : this.companyRepository.save(new Company(email, this.passwordEncoder.encode(password), nameArg, Role.ROLE_USER, "../images/profilePictures/company-default.png", null, null, AccountStatus.ACTIVE, UserType.COMPANY));
     }
 
     @Override

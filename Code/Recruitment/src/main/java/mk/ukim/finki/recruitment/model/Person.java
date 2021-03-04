@@ -4,6 +4,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import mk.ukim.finki.recruitment.model.enumerations.AccountStatus;
 import mk.ukim.finki.recruitment.model.enumerations.Role;
+import mk.ukim.finki.recruitment.model.enumerations.UserType;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -23,8 +24,8 @@ public class Person extends User {
 
     public Person() {}
 
-    public Person(String username, String email, String password, String name, Role role, String imageSourceUrl, String bio, String accountRole, AccountStatus accountStatus) {
-        super(email, password, name, role, imageSourceUrl, bio, accountRole, accountStatus);
+    public Person(String username, String email, String password, String name, Role role, String imageSourceUrl, String bio, String accountRole, AccountStatus accountStatus, UserType userType) {
+        super(email, password, name, role, imageSourceUrl, bio, accountRole, accountStatus, userType);
         this.username = username;
     }
 }

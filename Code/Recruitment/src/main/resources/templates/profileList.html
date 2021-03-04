@@ -1,0 +1,60 @@
+<section xmlns:th="http://www.thymeleaf.org"
+         xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+    <div class="courses-area section-padding40 fix">
+        <div class="container">
+            <div class="row justify-content-start">
+                <div class="col-xl-7 col-lg-8">
+                    <div class="section-tittle text-center mb-55 divsInline">
+                        <h2>All active profiles</h2>
+                    </div>
+                </div>
+                <form method="post" action="/profiles" class="divsInline" style="margin-left: 170px;">
+                    <label for="profileSelect" style="font-weight: bold; font-size: 18px;">Filter by: </label>
+                    <select class="form-select" id="profileSelect" name="profileSelect" aria-label="Default select example" style="margin-left: 5px; margin-right: 5px;">
+                        <option value="all">All</option>
+                        <option value="company">Company</option>
+                        <option value="person">Person</option>
+                    </select>
+                    <button type="submit" class="btn btn-primary" style="">Filter <i class="fa fa-filter"></i></button>
+                </form>
+                <form method="post" action="/profiles/search" class="divsInline" style="margin-left: 811px; margin-top: -30px;">
+                    <div class="input-group">
+                        <div class="form-outline">
+                            <input type="search" id="form1" name="queryString" class="form-control" placeholder="Search profiles..." style="height: 40px; width: 250px;"/>
+                        </div>
+                        <button type="submit" class="btn btn-primary" style="height: 40px;">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+                </form>
+            </div>
+            <div class="row">
+                <div th:if="${noProfilesExist}" class="text-danger" style="font-size: 20px;">No profiles exist at this moment!</div>
+                <div th:if="${noProfilesFound}" class="text-danger" style="font-size: 20px;">No profiles found.</div>
+                <div th:if="${notFoundByQuery}" class="text-danger" style="font-size: 20px;">There are no results found matching your search criteria.</div>
+                <div class="col-lg-4 profileItem" th:each="profile : ${profiles}">
+                    <div class="properties properties2 mb-30">
+                        <div class="properties__card">
+                            <div class="properties__img overlay1">
+                                <a href="#"><img th:src="${profile.getImageSourceUrl()}" style="width: 332px; height: 315px;" alt=""></a>
+                            </div>
+                            <div class="properties__caption">
+                                <p th:text="${profile.getUserType()}"></p>
+                                <h3><a href="#" th:text="${profile.getName()}" style="font-size: 33px; font-weight: bold;"></a></h3>
+                                <p th:if="${profile.getBio() != null}" th:text="${profile.getBio()}"></p>
+                                <p th:if="${profile.getBio() == null}"></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row justify-content-center" style="margin-top: 35px;">
+                <div class="col-xl-7 col-lg-8">
+                    <div class="section-tittle text-center mt-40">
+                        <a href="#myHeader" class="border-btn">Back to top of page</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

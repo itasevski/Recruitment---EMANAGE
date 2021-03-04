@@ -3,6 +3,7 @@ package mk.ukim.finki.recruitment.model;
 import lombok.Data;
 import mk.ukim.finki.recruitment.model.enumerations.AccountStatus;
 import mk.ukim.finki.recruitment.model.enumerations.Role;
+import mk.ukim.finki.recruitment.model.enumerations.UserType;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -32,6 +33,9 @@ public abstract class User implements UserDetails {
     @Enumerated(value = EnumType.STRING)
     private AccountStatus accountStatus;
 
+    @Enumerated(value = EnumType.STRING)
+    private UserType userType;
+
     private boolean isAccountNonExpired = true;
     private boolean isAccountNonLocked = true;
     private boolean isCredentialsNonExpired = true;
@@ -39,7 +43,7 @@ public abstract class User implements UserDetails {
 
     public User() {}
 
-    public User(String email, String password, String name, Role role, String imageSourceUrl, String bio, String accountRole, AccountStatus accountStatus) {
+    public User(String email, String password, String name, Role role, String imageSourceUrl, String bio, String accountRole, AccountStatus accountStatus, UserType userType) {
         this.email = email;
         this.password = password;
         this.name = name;
@@ -48,6 +52,7 @@ public abstract class User implements UserDetails {
         this.bio = bio;
         this.accountRole = accountRole;
         this.accountStatus = accountStatus;
+        this.userType = userType;
     }
 
     @Override

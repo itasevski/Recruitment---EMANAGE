@@ -4,6 +4,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import mk.ukim.finki.recruitment.model.enumerations.AccountStatus;
 import mk.ukim.finki.recruitment.model.enumerations.Role;
+import mk.ukim.finki.recruitment.model.enumerations.UserType;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
@@ -26,8 +27,8 @@ public class Company extends User {
 
     public Company() {}
 
-    public Company(String email, String password, String name, Role role, String imageSourceUrl, String bio, String accountRole, AccountStatus accountStatus) {
-        super(email, password, name, role, imageSourceUrl, bio, accountRole, accountStatus);
+    public Company(String email, String password, String name, Role role, String imageSourceUrl, String bio, String accountRole, AccountStatus accountStatus, UserType userType) {
+        super(email, password, name, role, imageSourceUrl, bio, accountRole, accountStatus, userType);
     }
 
     @Override
