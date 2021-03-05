@@ -3,30 +3,38 @@
     <div class="container bootstrap snippets bootdey autoScroll">
         <div class="profile card">
             <div class="profile-body">
+                <div th:if="${hasError}" class="text-danger" style="font-size: 30px">THE AD YOU SELECTED IS ALREADY SAVED IN YOUR LIST.</div>
                 <div class="profile-bio">
                     <div class="row">
                         <div class="col-md-5 text-center">
                             <img class="img-thumbnail md-margin-bottom-10" th:src="${imgsrc}" alt="">
                         </div>
                         <div class="col-md-7">
-                            <h2 th:text="${username}"></h2>
+                            <h2 th:text="${profileUsername}"></h2>
                             <span><strong>I am: </strong><span th:if="${role == null}">what is your role?</span><span th:if="${role != null}" th:text="${role}"></span></span>
                             <h6 th:if="${isCompany}" th:text="${companyId}"></h6>
                             <hr>
                             <h5>Bio</h5>
-                            <p th:if="${bio == null}">Click on "Edit profile" to edit your bio (and your profile). Say something about yourself!</p>
+                            <th:block th:if="${#request.getRemoteUser() == uuid}">
+                                <p th:if="${bio == null}">Click on "Edit profile" to edit your bio (and your profile). Say something about yourself!</p>
+                            </th:block>
                             <p th:if="${bio != null}" th:text="${bio}"></p>
                         </div>
-                        <form method="get" action="/profile/edit">
+                        <form th:if="${#request.getRemoteUser() == uuid}" method="get" action="/profile/edit">
                             <button type="submit" class="btn btn-outline-dark" style="margin-left: 950px">Edit profile</button>
                         </form>
+                        <th:block th:if="${#request.getRemoteUser() != uuid}">
+                            <form th:if="${isCurrentUserAdmin}" method="get" th:action="@{'/profile/ban/{uuid}' (uuid=${uuid})}">
+                                <button type="submit" class="btn btn-outline-danger" style="margin-left: 910px;">Permanently ban</button>
+                            </form>
+                        </th:block>
                     </div>
                 </div>
             </div>
         </div>
     </div>
     <br>
-    <th:block sec:authorize="hasRole('ROLE_USER')" th:if="${isPerson}"> <!-- ZA KORISNIK -->
+    <th:block sec:authorize="hasRole('ROLE_USER')" th:if="${#request.getRemoteUser() == uuid}"> <!-- ZA KORISNIK -->
         <div class="container">
             <div class="row bootstrap snippets bootdeys">
                 <div class="col-md-8 col-sm-12">
@@ -64,7 +72,7 @@
             </div>
         </div>
     </th:block>
-    <th:block sec:authorize="hasRole('ROLE_USER')" th:if="${isCompany}"> <!-- ZA KOMPANIJA -->
+    <th:block th:if="${isCompany}"> <!-- ZA KOMPANIJA -->
         <div class="container">
             <div class="row bootstrap snippets bootdeys">
                 <div class="col-md-8 col-sm-12">
@@ -86,8 +94,16 @@
                                             <strong class="text-success" th:text="${ad.getCompany().getName()}"></strong>
                                             <p style="font-size: 20px; font-weight: bold;" th:text="${ad.getHeader()}"></p>
                                             <p th:text="${ad.getBody()}"></p>
-                                            <form method="get" th:action="@{'/profile/company_buttons_back/{id}' (id=${ad.getId()})}">
-                                                <th:block th:if="${ad.getCompany().getId() == #request.getRemoteUser() || isAdmin == true}">
+                                            <form method="get" th:action="@{'/profiles/company_buttons_front/{id}/{uuid}' (id=${ad.getId()}, uuid=${uuid})}">
+                                                <th:block th:if="${isCurrentUserAdmin == null && isCurrentUserCompany == null}">
+                                                    <button type="submit" name="personButton" value="interested" class="btn btn-outline-info media-bottom">I'm interested</button>
+                                                </th:block>
+                                                <th:block th:if="${isPerson}">
+                                                    <button type="submit" name="personButton" value="email" class="btn btn-outline-success media-bottom">Send e-mail</button>
+                                                </th:block>
+                                            </form>
+                                            <form method="get" th:action="@{'/profiles/company_buttons_back/{id}/{uuid}' (id=${ad.getId()}, uuid=${uuid})}">
+                                                <th:block th:if="${ad.getCompany().getId() == #request.getRemoteUser() || isCurrentUserAdmin == true}">
                                                     <button type="submit" name="otherButton" value="delete" class="btn btn-outline-danger media-bottom">Delete</button>
                                                 </th:block>
                                                 <th:block th:if="${ad.getCompany().getId() == #request.getRemoteUser()}">

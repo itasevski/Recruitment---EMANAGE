@@ -36,11 +36,24 @@
                     <div class="properties properties2 mb-30">
                         <div class="properties__card">
                             <div class="properties__img overlay1">
-                                <a href="#"><img th:src="${profile.getImageSourceUrl()}" style="width: 332px; height: 315px;" alt=""></a>
+                                <a th:if="${profile.getUserType().name() == 'PERSON' || profile.getUserType().name() == 'ADMIN'}" th:href="@{'/profiles/{uuid}' (uuid=${profile.getUsername()})}"><img th:src="${profile.getImageSourceUrl()}" style="width: 332px; height: 315px;" alt=""></a>
+                                <a th:if="${profile.getUserType().name() == 'COMPANY'}" th:href="@{'/profiles/{uuid}' (uuid=${profile.getId()})}"><img th:src="${profile.getImageSourceUrl()}" style="width: 332px; height: 315px;" alt=""></a>
                             </div>
                             <div class="properties__caption">
-                                <p th:text="${profile.getUserType()}"></p>
-                                <h3><a href="#" th:text="${profile.getName()}" style="font-size: 33px; font-weight: bold;"></a></h3>
+                                <th:block th:if="${profile.getUserType().name() == 'COMPANY'}">
+                                    <p th:if="${#request.getRemoteUser() == profile.getId()}" th:text="${profile.getUserType() + ' - ME'}" ></p>
+                                    <p th:if="${#request.getRemoteUser() != profile.getId()}" th:text="${profile.getUserType()}"></p>
+                                </th:block>
+                                <th:block th:if="${profile.getUserType().name() == 'ADMIN'}">
+                                    <p th:if="${#request.getRemoteUser() == profile.getUsername()}" th:text="${profile.getUserType() + ' - ME'}"></p>
+                                    <p th:if="${#request.getRemoteUser() != profile.getUsername()}" th:text="${profile.getUserType()}"></p>
+                                </th:block>
+                                <th:block th:if="${profile.getUserType().name() == 'PERSON'}">
+                                    <p th:if="${#request.getRemoteUser() == profile.getUsername()}" th:text="${profile.getUserType() + ' - ME'}"></p>
+                                    <p th:if="${#request.getRemoteUser() != profile.getUsername()}" th:text="${profile.getUserType()}"></p>
+                                </th:block>
+                                <h3 th:if="${profile.getUserType().name() == 'PERSON' || profile.getUserType().name() == 'ADMIN'}"><a th:href="@{'/profiles/{uuid}' (uuid=${profile.getUsername()})}" th:text="${profile.getName()}" style="font-size: 33px; font-weight: bold;"></a></h3>
+                                <h3 th:if="${profile.getUserType().name() == 'COMPANY'}"><a th:href="@{'/profiles/{uuid}' (uuid=${profile.getId()})}" th:text="${profile.getName()}" style="font-size: 33px; font-weight: bold;"></a></h3>
                                 <p th:if="${profile.getBio() != null}" th:text="${profile.getBio()}"></p>
                                 <p th:if="${profile.getBio() == null}"></p>
                             </div>

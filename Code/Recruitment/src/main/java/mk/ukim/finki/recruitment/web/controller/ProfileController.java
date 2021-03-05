@@ -46,8 +46,14 @@ public class ProfileController {
         return "master-template";
     }
 
-    // TODO: 02.3.2021 -> implementiraj mailto funkcija i dovrsi go metodov
-    // za profilot na korisnikot, da ima opcii za prakjanje email ili brisenje na nekoj zacuvan oglas
+    @GetMapping("/ban/{uuid}")
+    public String banProfile(@PathVariable String uuid) {
+        this.userService.banUser(uuid);
+
+        return "redirect:/profiles";
+    }
+
+
     @GetMapping("/person_buttons/{id}")
     public String adDeleteOrEmail(@PathVariable Long id,
                                   @RequestParam String personButton,
@@ -63,25 +69,6 @@ public class ProfileController {
     }
 
 
-    // TODO: 02.3.2021 -> posle implementiranje na prebaruvanje i pregled  na profili na kompanii, dovrsi go metodov
-    // za profilot na kompanijata, koga ke bide otvoren od strana na korisnikot
-    @GetMapping("/company_buttons_front/{id}")
-    public String adInterestedOrEmail(@PathVariable Long id,
-                                      @RequestParam String personButton,
-                                      HttpServletRequest request) {
-        if(personButton.equals("interested")) this.adService.save(request.getRemoteUser(), id);
-        else {
-            Company adOwner = this.adService.getAdOwner(id);
-            return "redirect:/email?address=" + adOwner.getEmail() + "&subject=" + this.adService.findById(id).getHeader()
-                    + "&profileFlag=true";
-        }
-
-        return "redirect:/profile";
-    }
-
-
-    // TODO: 02.3.2021 -> kreiraj strana za edit na oglas, implementiraj ja funkcionalnosta i dovrsi go metodov
-    // za profilot na kompanijata, da menadzira so svoite oglasi (da gi brise ili ureduva)
     @GetMapping("/company_buttons_back/{id}")
     public String adEditOrDelete(@PathVariable Long id,
                                  @RequestParam String otherButton) {

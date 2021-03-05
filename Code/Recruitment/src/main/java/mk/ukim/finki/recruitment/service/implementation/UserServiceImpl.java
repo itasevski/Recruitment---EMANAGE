@@ -113,6 +113,13 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public void banUser(String uuid) {
+        Optional<Person> user = this.personRepository.findByUsername(uuid);
+        if (user.isPresent()) this.personRepository.deleteById(uuid);
+        else this.companyRepository.deleteById(uuid);
+    }
+
+    @Override
     public long getActiveUsers() {
         return this.personRepository.findAll().stream()
                 .filter(person -> person.getRole() == Role.ROLE_USER && person.getAccountStatus() == AccountStatus.ACTIVE)

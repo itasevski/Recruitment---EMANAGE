@@ -42,7 +42,7 @@
                             <li class="list-group-item">
                                 <div class="media">
                                     <div class="media-left">
-                                        <a class="avatar avatar-online" href="javascript:void(0)">
+                                        <a th:href="@{'/profiles/{uuid}' (uuid=${ad.getCompany().getId()})}" class="avatar avatar-online" href="javascript:void(0)">
                                             <img th:if="${#request.getRemoteUser() != null}" th:src="${ad.getCompany().getImageSourceUrl()}" alt="...">
                                             <img th:if="${#request.getRemoteUser() == null}" th:src="${defaultProfilePicture}" alt="...">
                                             <i></i>
@@ -50,7 +50,7 @@
                                     </div>
                                     <div class="media-body">
                                         <small class="text-muted pull-right" th:text="${ad.getTimestamp()}"></small>
-                                        <h4 class="media-heading" th:text="${ad.getCompany().getName()}"></h4>
+                                        <a class="feedHoverTitle" th:href="@{'/profiles/{uuid}' (uuid=${ad.getCompany().getId()})}"><h4 class="media-heading feedHoverTitle" th:text="${ad.getCompany().getName()}"></h4></a>
                                         <div style="font-size: 20px; font-weight: bold; padding-bottom: 7px;" th:text="'Title: ' + ${ad.getHeader()}"></div>
                                         <div th:text="${ad.getBody()}"></div>
                                         <form method="get" th:action="@{'/feed/person/{id}' (id=${ad.getId()})}">

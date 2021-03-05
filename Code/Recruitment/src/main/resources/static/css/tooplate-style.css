@@ -1005,9 +1005,13 @@ body {
   left: 12%;
   margin-right: 100px;
   margin-bottom: 35px;
-  border: 1px solid #29ca8e;
+  border: 1px solid #1c2e4a;
   padding: 23px;
   border-radius: 25px;
+}
+
+.feedHoverTitle:hover {
+  color: #29ca8e;
 }
 
 /* MATEJ */
