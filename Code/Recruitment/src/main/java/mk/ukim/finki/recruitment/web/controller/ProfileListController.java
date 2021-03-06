@@ -30,6 +30,7 @@ public class ProfileListController {
     @GetMapping
     public String getProfileListPage(HttpServletRequest request, Model model) {
         addUsernameParam(request, model);
+        modifyModelByCurrentUser(this.userService.getUserInstanceByUUID(request.getRemoteUser()), model);
 
         List<User> users = this.userService.getAllUsers();
 
@@ -94,6 +95,7 @@ public class ProfileListController {
     public String filterProfileListPage(@RequestParam String profileSelect,
                                   HttpServletRequest request, Model model) {
         addUsernameParam(request, model);
+        modifyModelByCurrentUser(this.userService.getUserInstanceByUUID(request.getRemoteUser()), model);
 
         if(profileSelect.equals("all")) return "redirect:/profiles";
         else if(profileSelect.equals("company")) {
@@ -121,6 +123,7 @@ public class ProfileListController {
         if(queryString == null || queryString.isEmpty()) return "redirect:/profiles";
 
         addUsernameParam(request, model);
+        modifyModelByCurrentUser(this.userService.getUserInstanceByUUID(request.getRemoteUser()), model);
 
         List<User> users = this.userService.getUsersByQueryString(queryString);
 

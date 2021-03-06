@@ -871,7 +871,6 @@ body {
   white-space: nowrap;
   border-radius: 1000px;
   vertical-align: bottom
-
 }
 
 .avatar i {
@@ -1012,6 +1011,10 @@ body {
 
 .feedHoverTitle:hover {
   color: #29ca8e;
+}
+
+.mlElem {
+  margin-left: 5px;
 }
 
 /* MATEJ */

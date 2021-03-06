@@ -45,9 +45,9 @@
                                             <span class="text-muted pull-right">
                                                 <small class="text-muted" th:text="${ad.getTimestamp()}"></small>
                                             </span>
-                                            <strong class="text-success" th:text="${ad.getCompany().getName()}"></strong>
-                                            <p style="font-size: 20px; font-weight: bold;" th:text="${ad.getHeader()}"></p>
-                                            <p th:text="${ad.getBody()}"></p>
+                                            <a class="mlElem" th:href="@{'/profiles/{uuid}' (uuid=${ad.getCompany().getId()})}"><strong class="text-success" th:text="${ad.getCompany().getName()}"></strong></a>
+                                            <p class="mlElem" style="font-size: 20px; font-weight: bold;" th:text="${ad.getHeader()}"></p>
+                                            <p class="mlElem" th:text="${ad.getBody()}"></p>
                                             <form method="get" th:action="@{'/profile/person_buttons/{id}' (id=${ad.getId()})}">
                                                 <th:block>
                                                     <button type="submit" name="personButton" value="email" class="btn btn-outline-success media-bottom">Send e-mail</button>
@@ -83,9 +83,9 @@
                                             <span class="text-muted pull-right">
                                                 <small class="text-muted" th:text="${ad.getTimestamp()}"></small>
                                             </span>
-                                            <strong class="text-success" th:text="${ad.getCompany().getName()}"></strong>
-                                            <p style="font-size: 20px; font-weight: bold;" th:text="${ad.getHeader()}"></p>
-                                            <p th:text="${ad.getBody()}"></p>
+                                            <strong class="text-success mlElem" th:text="${ad.getCompany().getName()}"></strong>
+                                            <p class="mlElem" style="font-size: 20px; font-weight: bold;" th:text="${ad.getHeader()}"></p>
+                                            <p class="mlElem" th:text="${ad.getBody()}"></p>
                                             <form method="get" th:action="@{'/profile/company_buttons_back/{id}' (id=${ad.getId()})}">
                                                 <th:block th:if="${ad.getCompany().getId() == #request.getRemoteUser() || isAdmin == true}">
                                                     <button type="submit" name="otherButton" value="delete" class="btn btn-outline-danger media-bottom">Delete</button>

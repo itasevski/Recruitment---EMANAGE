@@ -35,7 +35,7 @@
     </div>
     <br>
     <th:block sec:authorize="hasRole('ROLE_USER')" th:if="${#request.getRemoteUser() == uuid}"> <!-- ZA KORISNIK -->
-        <div class="container">
+        <div class="container" th:if="${isPerson}">
             <div class="row bootstrap snippets bootdeys">
                 <div class="col-md-8 col-sm-12">
                     <div class="comment-wrapper">
@@ -53,9 +53,9 @@
                                             <span class="text-muted pull-right">
                                                 <small class="text-muted" th:text="${ad.getTimestamp()}"></small>
                                             </span>
-                                            <strong class="text-success" th:text="${ad.getCompany().getName()}"></strong>
-                                            <p style="font-size: 20px; font-weight: bold;" th:text="${ad.getHeader()}"></p>
-                                            <p th:text="${ad.getBody()}"></p>
+                                            <a class="mlElem" th:href="@{'/profiles/{uuid}' (uuid=${ad.getCompany().getId()})}"><strong class="text-success" th:text="${ad.getCompany().getName()}"></strong></a>
+                                            <p class="mlElem" style="font-size: 20px; font-weight: bold;" th:text="${ad.getHeader()}"></p>
+                                            <p class="mlElem" th:text="${ad.getBody()}"></p>
                                             <form method="get" th:action="@{'/profile/person_buttons/{id}' (id=${ad.getId()})}">
                                                 <th:block>
                                                     <button type="submit" name="personButton" value="email" class="btn btn-outline-success media-bottom">Send e-mail</button>
@@ -91,9 +91,9 @@
                                             <span class="text-muted pull-right">
                                                 <small class="text-muted" th:text="${ad.getTimestamp()}"></small>
                                             </span>
-                                            <strong class="text-success" th:text="${ad.getCompany().getName()}"></strong>
-                                            <p style="font-size: 20px; font-weight: bold;" th:text="${ad.getHeader()}"></p>
-                                            <p th:text="${ad.getBody()}"></p>
+                                            <strong class="text-success mlElem" th:text="${ad.getCompany().getName()}"></strong>
+                                            <p class="mlElem" style="font-size: 20px; font-weight: bold;" th:text="${ad.getHeader()}"></p>
+                                            <p class="mlElem" th:text="${ad.getBody()}"></p>
                                             <form method="get" th:action="@{'/profiles/company_buttons_front/{id}/{uuid}' (id=${ad.getId()}, uuid=${uuid})}">
                                                 <th:block th:if="${isCurrentUserAdmin == null && isCurrentUserCompany == null}">
                                                     <button type="submit" name="personButton" value="interested" class="btn btn-outline-info media-bottom">I'm interested</button>

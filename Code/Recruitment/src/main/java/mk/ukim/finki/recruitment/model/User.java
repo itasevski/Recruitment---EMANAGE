@@ -7,10 +7,7 @@ import mk.ukim.finki.recruitment.model.enumerations.UserType;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.Lob;
-import javax.persistence.MappedSuperclass;
+import javax.persistence.*;
 import java.util.Collection;
 import java.util.Collections;
 
@@ -27,7 +24,10 @@ public abstract class User implements UserDetails {
     private Role role;
 
     private String imageSourceUrl;
+
+    @Column(length = 600)
     private String bio;
+
     private String accountRole;
 
     @Enumerated(value = EnumType.STRING)
