@@ -1,6 +1,5 @@
 package mk.ukim.finki.recruitment.repository;
 
-import mk.ukim.finki.recruitment.model.Ad;
 import mk.ukim.finki.recruitment.model.Person;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;

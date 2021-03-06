@@ -7,7 +7,6 @@ import mk.ukim.finki.recruitment.model.enumerations.Role;
 import mk.ukim.finki.recruitment.model.enumerations.UserType;
 
 import javax.persistence.*;
-import java.util.ArrayList;
 import java.util.List;
 
 @EqualsAndHashCode(callSuper = true)

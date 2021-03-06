@@ -1,8 +1,5 @@
 package mk.ukim.finki.recruitment.web.controller;
 
-import mk.ukim.finki.recruitment.model.Person;
-import mk.ukim.finki.recruitment.model.User;
-import mk.ukim.finki.recruitment.model.enumerations.Role;
 import mk.ukim.finki.recruitment.service.AdService;
 import mk.ukim.finki.recruitment.service.UserService;
 import org.springframework.stereotype.Controller;
