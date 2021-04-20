@@ -41,7 +41,6 @@ public class AdEditController {
         return "master-template";
     }
 
-    // TODO: 03.3.2021
     @PostMapping
     public String postAdEditPage(@RequestParam String adId,
                                  @RequestParam String header,

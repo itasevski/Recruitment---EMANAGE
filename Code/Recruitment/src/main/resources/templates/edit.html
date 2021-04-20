@@ -46,19 +46,19 @@
                                     <label>What is your role/status?</label>
                                     <br>
                                     <th:block th:if="${role == null}">
-                                        <label class="radio-inline" style="padding-right: 20px">
+                                        <label class="radio-inline" style="padding-right: 20px" th:if="${isPerson}">
                                             <input type="radio" name="accountRole" value="looking for job" checked>&nbsp;&nbsp;Looking for job
                                         </label>
                                     </th:block>
                                     <th:block th:if="${role != null}">
-                                        <label class="radio-inline" style="padding-right: 20px">
+                                        <label class="radio-inline" style="padding-right: 20px" th:if="${isPerson}">
                                             <input type="radio" name="accountRole" value="looking for job" th:checked="${role == 'looking for job'}">&nbsp;&nbsp;Looking for job
                                         </label>
                                     </th:block>
-                                    <label class="radio-inline" style="padding-right: 20px">
+                                    <label class="radio-inline" style="padding-right: 20px" th:if="${isPerson}">
                                         <input type="radio" name="accountRole" value="intern" th:checked="${role == 'intern'}">&nbsp;&nbsp;Intern
                                     </label>
-                                    <label class="radio-inline" style="padding-right: 20px">
+                                    <label class="radio-inline" style="padding-right: 20px" th:if="${isPerson}">
                                         <input type="radio" name="accountRole" value="employee" th:checked="${role == 'employee'}">&nbsp;&nbsp;Employee
                                     </label>
                                     <th:block th:if="${isCompany}">
